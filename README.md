@@ -24,3 +24,15 @@
 -   terraform import google_compute_network.vpc projects/"project-id"/global/networks/"vpc-name"
 -   terraform import google_compute_subnetwork.webapp_subnet projects/"project-id"/regions/us-east1/subnetworks/"subnet-name"
 -   terraform import google_compute_route.webapp_subnet_route projects/"project-id"/global/routes/"route-name"
+
+#### terraform variables
+
+project_id = "Enter your iroject ID"
+region = "Enter region"
+vpc_name = ["enter name", "enter name"] # List of Strings
+webapp_subnet_name = "Enter name"
+webapp_subnet_region = "Enter Region"
+webapp_subnet_cidr = "Enter cidr"
+db_subnet_name = "Enter name"
+db_subnet_region = "Enter region"
+db_subnet_cidr = "enter cidr"
