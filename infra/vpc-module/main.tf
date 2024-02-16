@@ -24,7 +24,7 @@ resource "google_compute_subnetwork" "db_subnet" {
 # https://registry.terraform.io/providers/hashicorp/google/latest/docs/resources/compute_route
 # https://github.com/hashicorp/terraform-provider-google/issues/16451
 resource "google_compute_route" "webapp_subnet_route" {
-  name             = "${var.webapp_subnet_name}-route"
+  name             = "route-${var.webapp_subnet_name}"
   dest_range       = "0.0.0.0/0"
   network          = google_compute_network.vpc.id
   next_hop_gateway = "default-internet-gateway"

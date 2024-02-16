@@ -27,12 +27,12 @@
 
 #### terraform variables
 
-project_id = "Enter your iroject ID"
-region = "Enter region"
-vpc_name = ["enter name", "enter name"] # List of Strings
-webapp_subnet_name = "Enter name"
-webapp_subnet_region = "Enter Region"
-webapp_subnet_cidr = "Enter cidr"
-db_subnet_name = "Enter name"
-db_subnet_region = "Enter region"
-db_subnet_cidr = "enter cidr"
+-   project_id = "Enter your iroject ID"
+-   region = "Enter region"
+-   vpc_name = ["enter name", "enter name"] # List of Strings
+-   webapp_subnet_name = "Enter name"
+-   webapp_subnet_region = "Enter Region"
+-   webapp_subnet_cidr = "Enter cidr"
+-   db_subnet_name = "Enter name"
+-   db_subnet_region = "Enter region"
+-   db_subnet_cidr = "enter cidr"
