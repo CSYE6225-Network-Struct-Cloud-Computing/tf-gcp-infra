@@ -2,7 +2,7 @@
 
 ##### Omkumar Dhirenbhai Solanki - 002841552
 
-####Steps
+#### Steps
 
 -   Create a new project in GCP
 -   Method 1
