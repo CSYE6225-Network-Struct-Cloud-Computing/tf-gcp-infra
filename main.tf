@@ -29,7 +29,7 @@ locals {
 # https://www.digitalocean.com/community/tutorials/how-to-build-a-custom-terraform-module
 module "myvpc" {
   for_each             = local.config
-  source               = "./vpc-module"
+  source               = "./vpc-module1"
   vpc_name             = each.key
   webapp_subnet_name   = each.value.webapp_subnet_name
   webapp_subnet_cidr   = var.webapp_subnet_cidr
