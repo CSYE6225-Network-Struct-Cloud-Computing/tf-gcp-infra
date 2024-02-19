@@ -8,9 +8,9 @@ terraform {
 }
 
 # https://registry.terraform.io/providers/hashicorp/google/latest/docs
-provider "google"   {
+provider "google" {
   project = var.project_id
-  region  = var.region
+  region  = var.regio
 }
 
 # https://discuss.hashicorp.com/t/loop-with-list-map/8878
