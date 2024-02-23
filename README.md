@@ -27,12 +27,32 @@
 
 #### terraform variables
 
--   project_id = "Enter your iroject ID"
--   region = "Enter region"
--   vpc_name = ["enter name", "enter name"] # List of Strings
--   webapp_subnet_name = "Enter name"
--   webapp_subnet_region = "Enter Region"
--   webapp_subnet_cidr = "Enter cidr"
--   db_subnet_name = "Enter name"
--   db_subnet_region = "Enter region"
--   db_subnet_cidr = "enter cidr"
+-   project_id =
+-   region =
+-   vpc_name =
+-   webapp_subnet_name =
+-   webapp_subnet_region =
+-   webapp_subnet_cidr =
+-   db_subnet_name =
+-   db_subnet_region =
+-   db_subnet_cidr =
+-   vm_name =
+-   machine_type =
+-   zone =
+-   boot_disk_image =
+-   boot_disk_type =
+-   tags = # list(string)
+-   boot_disk_size =
+-   network_tier =
+-   stack_type =
+-   auto_create_subnetworks =
+-   routing_mode =
+-   delete_default_routes_on_create =
+-   webapp_subnet_route_dest_range =
+-   webapp_subnet_route_next_hop_gateway =
+-   webapp_firewall_name =
+-   webapp_firewall_protocol =
+-   webapp_firewall_ports = # list(string)
+-   webapp-firewall_direction =
+-   webapp_firewall_target_tags = # list(string)
+-   webapp_firewall_source_ranges = # list(string)
