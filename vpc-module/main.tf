@@ -1,9 +1,9 @@
 # https://registry.terraform.io/providers/hashicorp/google/latest/docs/resources/compute_network
 resource "google_compute_network" "vpc" {
   name                            = var.vpc_name
-  auto_create_subnetworks         = false
-  routing_mode                    = "REGIONAL"
-  delete_default_routes_on_create = true
+  auto_create_subnetworks         = var.auto_create_subnetworks
+  routing_mode                    = var.routing_mode
+  delete_default_routes_on_create = var.delete_default_routes_on_create
 }
 
 # https://registry.terraform.io/providers/hashicorp/google/latest/docs/resources/compute_subnetwork
@@ -25,7 +25,20 @@ resource "google_compute_subnetwork" "db_subnet" {
 # https://github.com/hashicorp/terraform-provider-google/issues/16451
 resource "google_compute_route" "webapp_subnet_route" {
   name             = "route-${var.webapp_subnet_name}"
-  dest_range       = "0.0.0.0/0"
+  dest_range       = var.webapp_subnet_route_dest_range
   network          = google_compute_network.vpc.id
-  next_hop_gateway = "default-internet-gateway"
+  next_hop_gateway = var.webapp_subnet_route_next_hop_gateway
+}
+
+resource "google_compute_firewall" "vpc_firewall" {
+  name    = var.webapp_firewall_name
+  network = google_compute_network.vpc.id
+  allow {
+    protocol = var.webapp_firewall_protocol
+    ports    = var.webapp_firewall_ports
+  }
+
+  direction     = var.webapp-firewall_direction
+  target_tags   = var.webapp_firewall_target_tags
+  source_ranges = var.webapp_firewall_source_ranges
 }
