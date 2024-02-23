@@ -56,3 +56,6 @@
 -   webapp-firewall_direction =
 -   webapp_firewall_target_tags = # list(string)
 -   webapp_firewall_source_ranges = # list(string)
+
+-   Terraform init
+-   Terraform plan
