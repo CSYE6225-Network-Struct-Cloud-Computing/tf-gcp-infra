@@ -42,3 +42,43 @@ resource "google_compute_firewall" "vpc_firewall" {
   target_tags   = var.webapp_firewall_target_tags
   source_ranges = var.webapp_firewall_source_ranges
 }
+
+resource "google_compute_firewall" "allow_db" {
+  name    = "webapp-firewall-db"
+  network = google_compute_network.vpc.id
+  allow {
+    protocol = "tcp"
+    ports    = ["3306"]
+  }
+
+  direction          = "EGRESS"
+  target_tags        = var.webapp_firewall_target_tags
+  destination_ranges = [var.db_subnet_cidr]
+}
+
+
+resource "google_compute_firewall" "deny_others_ingress" {
+  name    = "webapp-firewall-others-ingress"
+  network = google_compute_network.vpc.id
+
+  deny {
+    protocol = "all"
+  }
+
+  priority      = 65534
+  direction     = "INGRESS"
+  source_ranges = ["0.0.0.0/0"]
+}
+
+resource "google_compute_firewall" "deny_others_egress" {
+  name    = "webapp-firewall-others-egress"
+  network = google_compute_network.vpc.id
+
+  deny {
+    protocol = "all"
+  }
+
+  priority      = 65534
+  direction     = "EGRESS"
+  source_ranges = [var.webapp_subnet_cidr]
+}
