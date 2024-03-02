@@ -21,4 +21,27 @@ resource "google_compute_instance" "vm" {
     subnetwork = var.subnetwork
     stack_type = var.stack_type
   }
+  # metadata = {
+  #   startup_script = var.startup_script
+  # }
+  metadata_startup_script = <<-EOT
+      #!/bin/bash
+
+      touch /tmp/.env
+
+      echo "PORT=${var.PORT}" >> /tmp/.env
+      echo "MYSQL_USERNAME=${var.MYSQL_USERNAME}" >> /tmp/.env
+      echo "MYSQL_PASSWORD=${var.MYSQL_PASSWORD}" >> /tmp/.env
+      echo "MYSQL_DB_NAME=${var.MYSQL_DB_NAME}" >> /tmp/.env
+      echo "TEST_MYSQL_DB_NAME=${var.MYSQL_DB_NAME}" >> /tmp/.env
+      echo "MYSQL_HOST=${var.MYSQL_HOST}" >> /tmp/.env
+      echo "NODE_ENV=production" >> /tmp/.env
+
+      mv /tmp/.env /home/csye6225/app/.env
+      chown -R csye6225:csye6225 /home/csye6225/app
+
+      sudo systemctl start runApp
+
+      EOT
+
 }

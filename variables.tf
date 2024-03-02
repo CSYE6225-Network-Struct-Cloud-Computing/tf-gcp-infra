@@ -117,3 +117,70 @@ variable "webapp_firewall_source_ranges" {
   type    = list(string)
   default = ["0.0.0.0/0"]
 }
+
+variable "database_version_SQL" {
+  default = "MYSQL_8_0"
+}
+
+variable "google_sql_database_instance_tier" {
+  default = "db-f1-micro"
+}
+
+variable "google_sql_database_instance_availability_type" {
+  default = "REGIONAL"
+}
+
+variable "google_sql_database_instance_disk_type" {
+  default = "PD_SSD"
+}
+
+variable "google_sql_database_instance_disk_size" {
+  default = "100"
+}
+
+variable "google_sql_database_instance_backup_configuration_enabled" {
+  default = true
+}
+
+variable "google_sql_database_instance_backup_configuration_binary_log_enabled" {
+  default = true
+}
+
+variable "google_sql_database_instance_psc_enabled" {
+  default = true
+}
+
+variable "google_sql_database_instance_allowed_consumer_projects" {
+}
+
+variable "google_sql_database_instance_ipv4_enabled" {
+  default = false
+}
+
+variable "google_sql_database_instance_deletion_protection" {
+  default = false
+}
+
+variable "google_compute_address_address_type" {
+  default = "INTERNAL"
+}
+
+variable "google_compute_address_address" {
+  default = "10.0.2.11"
+}
+
+variable "google_compute_forwarding_rule_load_balancing_schema" {
+  default = ""
+}
+
+variable "google_sql_database_name" {
+  default = "my-database-test"
+}
+
+variable "google_sql_user_name" {
+  default = "webapp"
+}
+
+variable "PORT" {
+  default = 3000
+}

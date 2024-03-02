@@ -29,3 +29,27 @@ variable "subnetwork" {
 
 variable "stack_type" {
 }
+
+# variable "startup_script" {
+#   type = string
+# }
+
+variable "PORT" {
+}
+
+variable "MYSQL_USERNAME" {
+}
+
+variable "MYSQL_PASSWORD" {
+}
+
+variable "MYSQL_DB_NAME" {
+}
+
+variable "TEST_MYSQL_DB_NAME" {
+}
+
+variable "MYSQL_HOST" {
+}
+
+
