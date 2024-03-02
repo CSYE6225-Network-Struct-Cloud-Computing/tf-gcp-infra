@@ -44,7 +44,7 @@ resource "google_compute_firewall" "vpc_firewall" {
 }
 
 resource "google_compute_firewall" "allow_db" {
-  name    = "webapp-firewall-db"
+  name    = "webapp-compute-firewall-allow-db"
   network = google_compute_network.vpc.id
   allow {
     protocol = "tcp"
@@ -57,8 +57,8 @@ resource "google_compute_firewall" "allow_db" {
 }
 
 
-resource "google_compute_firewall" "deny_others_ingress" {
-  name    = "webapp-firewall-others-ingress"
+resource "google_compute_firewall" "others_ingress_deny" {
+  name    = "webapp-compute-firewall-deny-others-ingress"
   network = google_compute_network.vpc.id
 
   deny {
@@ -70,8 +70,8 @@ resource "google_compute_firewall" "deny_others_ingress" {
   source_ranges = ["0.0.0.0/0"]
 }
 
-resource "google_compute_firewall" "deny_others_egress" {
-  name    = "webapp-firewall-others-egress"
+resource "google_compute_firewall" "others_egress_deny" {
+  name    = "webapp-compute-firewall-deny-others-egress"
   network = google_compute_network.vpc.id
 
   deny {
