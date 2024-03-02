@@ -54,3 +54,42 @@ variable "webapp_subnet_route_dest_range" {
 
 variable "webapp_subnet_route_next_hop_gateway" {
 }
+
+variable "google_compute_firewall_db_allow_name" {
+}
+
+variable "google_compute_firewall_db_allow_protocol" {
+}
+
+variable "google_compute_firewall_db_allow_ports" {
+}
+
+variable "google_compute_firewall_db_allow_direction" {
+}
+
+variable "google_compute_firewall_others_ingress_deny_name" {
+}
+
+variable "google_compute_firewall_others_ingress_deny_protocol" {
+}
+
+variable "google_compute_firewall_others_ingress_deny_priority" {
+}
+
+variable "google_compute_firewall_others_ingress_deny_direction" {
+}
+
+variable "google_compute_firewall_others_ingress_deny_source_ranges" {
+}
+
+variable "google_compute_firewall_others_egress_deny_name" {
+}
+
+variable "google_compute_firewall_others_egress_deny_protocol" {
+}
+
+variable "google_compute_firewall_others_egress_deny_priority" {
+}
+
+variable "google_compute_firewall_others_egress_deny_direction" {
+}

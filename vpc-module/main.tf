@@ -44,41 +44,41 @@ resource "google_compute_firewall" "vpc_firewall" {
 }
 
 resource "google_compute_firewall" "allow_db" {
-  name    = "webapp-compute-firewall-allow-db"
+  name    = var.google_compute_firewall_db_allow_name
   network = google_compute_network.vpc.id
   allow {
-    protocol = "tcp"
-    ports    = ["3306"]
+    protocol = var.google_compute_firewall_db_allow_protocol
+    ports    = var.google_compute_firewall_db_allow_ports
   }
 
-  direction          = "EGRESS"
+  direction          = var.google_compute_firewall_db_allow_direction
   target_tags        = var.webapp_firewall_target_tags
   destination_ranges = [var.db_subnet_cidr]
 }
 
 
 resource "google_compute_firewall" "others_ingress_deny" {
-  name    = "webapp-compute-firewall-deny-others-ingress"
+  name    = var.google_compute_firewall_others_ingress_deny_name
   network = google_compute_network.vpc.id
 
   deny {
-    protocol = "all"
+    protocol = var.google_compute_firewall_others_ingress_deny_protocol
   }
 
-  priority      = 65534
-  direction     = "INGRESS"
-  source_ranges = ["0.0.0.0/0"]
+  priority      = var.google_compute_firewall_others_ingress_deny_priority
+  direction     = var.google_compute_firewall_others_ingress_deny_direction
+  source_ranges = var.google_compute_firewall_others_ingress_deny_source_ranges
 }
 
 resource "google_compute_firewall" "others_egress_deny" {
-  name    = "webapp-compute-firewall-deny-others-egress"
+  name    = var.google_compute_firewall_others_egress_deny_name
   network = google_compute_network.vpc.id
 
   deny {
-    protocol = "all"
+    protocol = var.google_compute_firewall_others_egress_deny_protocol
   }
 
-  priority      = 65534
-  direction     = "EGRESS"
+  priority      = var.google_compute_firewall_others_egress_deny_priority
+  direction     = var.google_compute_firewall_others_egress_deny_direction
   source_ranges = [var.webapp_subnet_cidr]
 }

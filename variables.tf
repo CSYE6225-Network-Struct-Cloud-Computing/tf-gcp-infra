@@ -184,3 +184,57 @@ variable "google_sql_user_name" {
 variable "PORT" {
   default = 3000
 }
+
+variable "google_compute_firewall_db_allow_name" {
+  default = "webapp-compute-firewall-allow-db"
+}
+
+variable "google_compute_firewall_db_allow_protocol" {
+  default = "tcp"
+}
+
+variable "google_compute_firewall_db_allow_ports" {
+  default = ["3306"]
+  type    = list(string)
+}
+
+variable "google_compute_firewall_db_allow_direction" {
+  default = "EGRESS"
+}
+
+variable "google_compute_firewall_others_ingress_deny_name" {
+  default = "webapp-compute-firewall-deny-others-ingress"
+}
+
+variable "google_compute_firewall_others_ingress_deny_protocol" {
+  default = "all"
+}
+
+variable "google_compute_firewall_others_ingress_deny_priority" {
+  default = 65534
+}
+
+variable "google_compute_firewall_others_ingress_deny_direction" {
+  default = "INGRESS"
+}
+
+variable "google_compute_firewall_others_ingress_deny_source_ranges" {
+  type    = list(string)
+  default = ["0.0.0.0/0"]
+}
+
+variable "google_compute_firewall_others_egress_deny_name" {
+  default = "webapp-compute-firewall-deny-others-egress"
+}
+
+variable "google_compute_firewall_others_egress_deny_protocol" {
+  default = "all"
+}
+
+variable "google_compute_firewall_others_egress_deny_priority" {
+  default = 65534
+}
+
+variable "google_compute_firewall_others_egress_deny_direction" {
+  default = "EGRESS"
+}
