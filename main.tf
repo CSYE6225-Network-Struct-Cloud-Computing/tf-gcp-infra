@@ -28,25 +28,39 @@ provider "google" {
 # https://developer.hashicorp.com/terraform/language/meta-arguments/for_each
 # https://www.digitalocean.com/community/tutorials/how-to-build-a-custom-terraform-module
 module "myvpc" {
-  source                               = "./vpc-module"
-  vpc_name                             = var.vpc_name
-  webapp_subnet_name                   = var.webapp_subnet_name
-  webapp_subnet_cidr                   = var.webapp_subnet_cidr
-  webapp_subnet_region                 = var.region
-  db_subnet_name                       = var.db_subnet_name
-  db_subnet_cidr                       = var.db_subnet_cidr
-  db_subnet_region                     = var.region
-  auto_create_subnetworks              = var.auto_create_subnetworks
-  routing_mode                         = var.routing_mode
-  delete_default_routes_on_create      = var.delete_default_routes_on_create
-  webapp_subnet_route_dest_range       = var.webapp_subnet_route_dest_range
-  webapp_subnet_route_next_hop_gateway = var.webapp_subnet_route_next_hop_gateway
-  webapp_firewall_name                 = var.webapp_firewall_name
-  webapp_firewall_protocol             = var.webapp_firewall_protocol
-  webapp_firewall_ports                = var.webapp_firewall_ports
-  webapp-firewall_direction            = var.webapp-firewall_direction
-  webapp_firewall_target_tags          = var.webapp_firewall_target_tags
-  webapp_firewall_source_ranges        = var.webapp_firewall_source_ranges
+  source                                                    = "./vpc-module"
+  vpc_name                                                  = var.vpc_name
+  webapp_subnet_name                                        = var.webapp_subnet_name
+  webapp_subnet_cidr                                        = var.webapp_subnet_cidr
+  webapp_subnet_region                                      = var.region
+  db_subnet_name                                            = var.db_subnet_name
+  db_subnet_cidr                                            = var.db_subnet_cidr
+  db_subnet_region                                          = var.region
+  auto_create_subnetworks                                   = var.auto_create_subnetworks
+  routing_mode                                              = var.routing_mode
+  delete_default_routes_on_create                           = var.delete_default_routes_on_create
+  webapp_subnet_route_dest_range                            = var.webapp_subnet_route_dest_range
+  webapp_subnet_route_next_hop_gateway                      = var.webapp_subnet_route_next_hop_gateway
+  webapp_firewall_name                                      = var.webapp_firewall_name
+  webapp_firewall_protocol                                  = var.webapp_firewall_protocol
+  webapp_firewall_ports                                     = var.webapp_firewall_ports
+  webapp-firewall_direction                                 = var.webapp-firewall_direction
+  webapp_firewall_target_tags                               = var.webapp_firewall_target_tags
+  webapp_firewall_source_ranges                             = var.webapp_firewall_source_ranges
+  google_compute_firewall_db_allow_name                     = var.google_compute_firewall_db_allow_name
+  google_compute_firewall_db_allow_protocol                 = var.google_compute_firewall_db_allow_protocol
+  google_compute_firewall_db_allow_ports                    = var.google_compute_firewall_db_allow_ports
+  google_compute_firewall_db_allow_direction                = var.google_compute_firewall_db_allow_direction
+  google_compute_firewall_others_ingress_deny_name          = var.google_compute_firewall_others_ingress_deny_name
+  google_compute_firewall_others_ingress_deny_protocol      = var.google_compute_firewall_others_ingress_deny_protocol
+  google_compute_firewall_others_ingress_deny_priority      = var.google_compute_firewall_others_ingress_deny_priority
+  google_compute_firewall_others_ingress_deny_direction     = var.google_compute_firewall_others_ingress_deny_direction
+  google_compute_firewall_others_ingress_deny_source_ranges = var.google_compute_firewall_others_ingress_deny_source_ranges
+  google_compute_firewall_others_egress_deny_name           = var.google_compute_firewall_others_egress_deny_name
+  google_compute_firewall_others_egress_deny_protocol       = var.google_compute_firewall_others_egress_deny_protocol
+  google_compute_firewall_others_egress_deny_priority       = var.google_compute_firewall_others_egress_deny_priority
+  google_compute_firewall_others_egress_deny_direction      = var.google_compute_firewall_others_egress_deny_direction
+
 }
 
 module "vm" {
