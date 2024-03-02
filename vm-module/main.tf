@@ -40,7 +40,7 @@ resource "google_compute_instance" "vm" {
       mv /tmp/.env /home/csye6225/app/.env
       chown -R csye6225:csye6225 /home/csye6225/app
 
-      sudo systemctl start runApp
+      systemctl start runApp
 
       EOT
 
