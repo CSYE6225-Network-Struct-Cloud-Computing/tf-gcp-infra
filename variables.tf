@@ -238,3 +238,15 @@ variable "google_compute_firewall_others_egress_deny_priority" {
 variable "google_compute_firewall_others_egress_deny_direction" {
   default = "EGRESS"
 }
+
+variable "google_dns_managed_zone_name" {
+  default = "omsolanki"
+}
+
+variable "google_dns_record_set_type" {
+  default = "A"
+}
+
+variable "google_dns_record_set_ttl" {
+  default = 300
+}

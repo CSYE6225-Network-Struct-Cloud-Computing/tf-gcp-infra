@@ -52,4 +52,5 @@ variable "TEST_MYSQL_DB_NAME" {
 variable "MYSQL_HOST" {
 }
 
-
+variable "service_account_email" { 
+}
