@@ -21,6 +21,7 @@ resource "google_compute_instance" "vm" {
     subnetwork = var.subnetwork
     stack_type = var.stack_type
   }
+
   # metadata = {
   #   startup_script = var.startup_script
   # }
@@ -44,4 +45,10 @@ resource "google_compute_instance" "vm" {
 
       EOT
 
+
+  service_account {
+    email  = var.service_account_email
+    scopes = ["cloud-platform"]
+  }
+  allow_stopping_for_update = true
 }

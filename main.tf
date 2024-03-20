@@ -81,40 +81,7 @@ module "vm" {
   MYSQL_DB_NAME      = module.cloudSQL.database_name
   MYSQL_HOST         = module.cloudSQL.internal_ip
   TEST_MYSQL_DB_NAME = module.cloudSQL.database_name
-
-
-  # PORT               = 3000
-  # MYSQL_USERNAME     = module.cloudSQL.db_username
-  # MYSQL_PASSWORD     = module.cloudSQL.db_password
-  # MYSQL_DB_NAME      = module.cloudSQL.database_name
-  # MYSQL_HOST         = module.cloudSQL.internal_ip
-  # TEST_MYSQL_DB_NAME = module.cloudSQL.database_name
-  # startup_script  = <<-EOT
-  #     #!/bin/bash  #module.cloudSQL.internal_ip
-
-  #     if [ -e "/opt/webapp/app/.env" ]; then
-  #       exit 0
-  #     fi
-
-  #     touch /tmp/.env
-
-  #     echo "PORT=${var.PORT}" >> /tmp/.env
-  #     echo "MYSQL_USERNAME=${module.cloudSQL.db_username}" >> /tmp/.env
-  #     echo "MYSQL_PASSWORD=${module.cloudSQL.db_password}" >> /tmp/.env
-  #     echo "MYSQL_DB_NAME=${module.cloudSQL.database_name}" >> /tmp/.env
-  #     echo "TEST_MYSQL_DB_NAME=${module.cloudSQL.database_name}" >> /tmp/.env
-  #     echo "MYSQL_HOST=${module.cloudSQL.internal_ip}" >> /tmp/.env
-  #     echo "NODE_ENV=production" >> /tmp/.env
-
-  #     mv /tmp/.env /home/csye6225/app/.env
-  #     chown -R csye6225:csye6225 /home/csye6225/app
-  #     chmod -R 764 /home/csye6225/app
-
-
-  #     EOT
-
-
-
+  service_account_email = module.serviceAccount.service_account_email
 }
 
 module "cloudSQL" {
@@ -138,5 +105,17 @@ module "cloudSQL" {
   google_compute_forwarding_rule_load_balancing_schema                 = var.google_compute_forwarding_rule_load_balancing_schema
   google_sql_database_name                                             = var.google_sql_database_name
   google_sql_user_name                                                 = var.google_sql_user_name
+}
+
+module "dns" {
+  source = "./dns-module"
+  vm_instance_ip = module.vm.vm_instance_ip
+  google_dns_managed_zone_name = var.google_dns_managed_zone_name
+  google_dns_record_set_type = var.google_dns_record_set_type
+  google_dns_record_set_ttl = var.google_dns_record_set_ttl
+}
+
+module "serviceAccount" {
+  source = "./serviceAccount-module"
 }
 
