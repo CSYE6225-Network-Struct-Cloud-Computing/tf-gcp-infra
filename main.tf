@@ -64,23 +64,23 @@ module "myvpc" {
 }
 
 module "vm" {
-  source             = "./vm-module"
-  vm_name            = var.vm_name
-  machine_type       = var.machine_type
-  zone               = var.zone
-  boot_disk_image    = var.boot_disk_image
-  subnetwork         = module.myvpc.webapp_subnet
-  boot_disk_size     = var.boot_disk_size
-  boot_disk_type     = var.boot_disk_type
-  tags               = module.myvpc.webapp_firewall_tags
-  network_tier       = var.network_tier
-  stack_type         = var.stack_type
-  PORT               = var.PORT
-  MYSQL_USERNAME     = module.cloudSQL.db_username
-  MYSQL_PASSWORD     = module.cloudSQL.db_password
-  MYSQL_DB_NAME      = module.cloudSQL.database_name
-  MYSQL_HOST         = module.cloudSQL.internal_ip
-  TEST_MYSQL_DB_NAME = module.cloudSQL.database_name
+  source                = "./vm-module"
+  vm_name               = var.vm_name
+  machine_type          = var.machine_type
+  zone                  = var.zone
+  boot_disk_image       = var.boot_disk_image
+  subnetwork            = module.myvpc.webapp_subnet
+  boot_disk_size        = var.boot_disk_size
+  boot_disk_type        = var.boot_disk_type
+  tags                  = module.myvpc.webapp_firewall_tags
+  network_tier          = var.network_tier
+  stack_type            = var.stack_type
+  PORT                  = var.PORT
+  MYSQL_USERNAME        = module.cloudSQL.db_username
+  MYSQL_PASSWORD        = module.cloudSQL.db_password
+  MYSQL_DB_NAME         = module.cloudSQL.database_name
+  MYSQL_HOST            = module.cloudSQL.internal_ip
+  TEST_MYSQL_DB_NAME    = module.cloudSQL.database_name
   service_account_email = module.serviceAccount.service_account_email
 }
 
@@ -108,14 +108,19 @@ module "cloudSQL" {
 }
 
 module "dns" {
-  source = "./dns-module"
-  vm_instance_ip = module.vm.vm_instance_ip
+  source                       = "./dns-module"
+  vm_instance_ip               = module.vm.vm_instance_ip
   google_dns_managed_zone_name = var.google_dns_managed_zone_name
-  google_dns_record_set_type = var.google_dns_record_set_type
-  google_dns_record_set_ttl = var.google_dns_record_set_ttl
+  google_dns_record_set_type   = var.google_dns_record_set_type
+  google_dns_record_set_ttl    = var.google_dns_record_set_ttl
 }
 
 module "serviceAccount" {
-  source = "./serviceAccount-module"
+  source                                              = "./serviceAccount-module"
+  project_id                                          = var.project_id
+  google_service_account_account_id                   = var.google_service_account_account_id
+  google_service_account_display_name                 = var.google_service_account_display_name
+  google_service_account_description                  = var.google_service_account_description
+  google_project_iam_binding_logging_admin            = var.google_project_iam_binding_logging_admin
+  google_project_iam_binding_monitoring_metric_writer = var.google_project_iam_binding_monitoring_metric_writer
 }
-

@@ -1,12 +1,12 @@
 resource "google_service_account" "default" {
-  account_id   = "service-account-logging"
-  display_name = "Service Account Logging" 
-  description = "Created by Terraform for Logging"
+  account_id   = var.google_service_account_account_id
+  display_name = var.google_service_account_display_name
+  description = var.google_service_account_description
 }
 
 resource "google_project_iam_binding" "logging_admin" {
-  project = "csye-6225-spring-2024-dev"
-  role    = "roles/logging.admin"
+  project = var.project_id
+  role    = var.google_project_iam_binding_logging_admin
 
   members = [
     "serviceAccount:${google_service_account.default.email}",
@@ -15,8 +15,8 @@ resource "google_project_iam_binding" "logging_admin" {
 }
 
 resource "google_project_iam_binding" "monitoring_metric_writer" {
-  project = "csye-6225-spring-2024-dev"
-  role    = "roles/monitoring.metricWriter"
+  project = var.project_id
+  role    = var.google_project_iam_binding_monitoring_metric_writer
 
   members = [
     "serviceAccount:${google_service_account.default.email}",

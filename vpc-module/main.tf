@@ -57,18 +57,18 @@ resource "google_compute_firewall" "allow_db" {
 }
 
 
-# resource "google_compute_firewall" "others_ingress_deny" {
-#   name    = var.google_compute_firewall_others_ingress_deny_name
-#   network = google_compute_network.vpc.id
+resource "google_compute_firewall" "others_ingress_deny" {
+  name    = var.google_compute_firewall_others_ingress_deny_name
+  network = google_compute_network.vpc.id
 
-#   deny {
-#     protocol = var.google_compute_firewall_others_ingress_deny_protocol
-#   }
+  deny {
+    protocol = var.google_compute_firewall_others_ingress_deny_protocol
+  }
 
-#   priority      = var.google_compute_firewall_others_ingress_deny_priority
-#   direction     = var.google_compute_firewall_others_ingress_deny_direction
-#   source_ranges = var.google_compute_firewall_others_ingress_deny_source_ranges
-# }
+  priority      = var.google_compute_firewall_others_ingress_deny_priority
+  direction     = var.google_compute_firewall_others_ingress_deny_direction
+  source_ranges = var.google_compute_firewall_others_ingress_deny_source_ranges
+}
 
 # resource "google_compute_firewall" "others_egress_deny" {
 #   name    = var.google_compute_firewall_others_egress_deny_name
