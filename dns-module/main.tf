@@ -1,5 +1,5 @@
 data "google_dns_managed_zone" "default" {
-  name = "omsolanki"
+  name = var.google_dns_managed_zone_name
 }
 
 resource "google_dns_record_set" "default" {
