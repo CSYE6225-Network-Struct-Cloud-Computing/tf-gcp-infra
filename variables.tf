@@ -266,3 +266,147 @@ variable "google_project_iam_binding_logging_admin" {
 variable "google_project_iam_binding_monitoring_metric_writer" {
   default = "roles/monitoring.metricWriter"
 }
+
+variable "pubsub_topic_name" {
+  default = "mypubsub"
+}
+
+variable "pubsub_message_retention_duration" {
+  default = "604800s"
+}
+
+variable "connector_name" {
+  default = "connector-sql"
+}
+
+variable "connector_ip_cidr_range" {
+  default = "10.8.0.0/28"
+}
+
+variable "connector_region" {
+  default = "us-east1"
+}
+
+variable "connector_machine_type" {
+  default = "f1-micro"
+}
+
+variable "connector_min_instances" {
+  default = "2"
+}
+
+variable "connector_max_instances" {
+  default = "3"
+}
+
+variable "bucket_name" {
+  default = "csye-6225-spring-2024-dev-bucket"
+}
+
+variable "bucket_object_name" {
+  default = "function-source.zip"
+}
+
+
+variable "cloud_fun_name" {
+  default = "cloud_fun"
+}
+
+variable "DOMAIN_NAME" {
+  default = "omsolanki.me"
+}
+
+variable "MAILGUN_KEY_API" {
+}
+
+variable "cloud_fun_ser_acc_account_id" {
+  default = "cloud-func-service-account"
+}
+
+variable "cloud_fun_ser_acc_display_name" {
+  default = "Email Verification Cloud Function"
+}
+
+variable "google_project_iam_binding_cloud_fun_run_invoker" {
+  default = "roles/run.invoker"
+}
+
+variable "google_project_iam_binding_cloud_fun_pubsub_subscriber" {
+  default = "roles/pubsub.subscriber"
+}
+
+variable "google_project_iam_binding_pubsub_publisher" {
+  default = "roles/pubsub.publisher"
+}
+
+variable "cloud_fun_ingress_settings" {
+  default = "ALLOW_INTERNAL_ONLY"
+}
+
+variable "cloud_fun_event_trigger_event_type" {
+  default = "google.cloud.pubsub.topic.v1.messagePublished"
+}
+
+variable "cloud_fun_vpc_connector_egress_settings" {
+  default = "PRIVATE_RANGES_ONLY"
+}
+
+variable "cloud_fun_runtime" {
+  default = "nodejs20"
+}
+
+variable "cloud_fun_available_memory_mb" {
+  default = "128"
+}
+
+variable "cloud_fun_location" {
+  default = "us-east1"
+}
+
+variable "cloud_fun_entry_point" {
+  default = "helloPubSub"
+}
+
+variable "cloud_fun_max_instance_count" {
+  default = "1"
+}
+
+variable "cloud_fun_min_instance_count" {
+  default = "0"
+}
+
+variable "cloud_fun_available_memory" {
+  default = "128Mi"
+}
+
+variable "cloud_fun_timeout_seconds" {
+  default = "60"
+}
+
+variable "cloud_fun_max_instance_request_concurrency" {
+  default = "1"
+}
+
+variable "cloud_fun_available_cpu" {
+  default = "1"
+}
+
+variable "cloud_fun_trigger_region" {
+  default = "us-east1"
+}
+
+variable "cloud_fun_retry_policy" {
+  default = "RETRY_POLICY_RETRY"
+}
+
+variable "DB_PORT" {
+  default = 3306
+}
+
+variable "cloud_fun_sender" {
+  default = "CSYE 6225 <no-reply@omsolanki.me>"
+}
+
+variable "cloud_fun_subject" {
+  default = "CSYE 6225 - Please Verify your account."
+}

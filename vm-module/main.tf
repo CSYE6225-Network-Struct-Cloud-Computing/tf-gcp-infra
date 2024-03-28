@@ -37,6 +37,8 @@ resource "google_compute_instance" "vm" {
       echo "TEST_MYSQL_DB_NAME=${var.MYSQL_DB_NAME}" >> /tmp/.env
       echo "MYSQL_HOST=${var.MYSQL_HOST}" >> /tmp/.env
       echo "NODE_ENV=production" >> /tmp/.env
+      echo "TOPIC_ID=${var.TOPIC_ID}" >> /tmp/.env
+      echo "PROJECT_ID=${var.PROJECT_ID}" >> /tmp/.env
 
       mv /tmp/.env /home/csye6225/app/.env
       chown -R csye6225:csye6225 /home/csye6225/app

@@ -82,6 +82,8 @@ module "vm" {
   MYSQL_HOST            = module.cloudSQL.internal_ip
   TEST_MYSQL_DB_NAME    = module.cloudSQL.database_name
   service_account_email = module.serviceAccount.service_account_email
+  TOPIC_ID              = module.pubsub.pubsub_name
+  PROJECT_ID            = var.project_id
 }
 
 module "cloudSQL" {
@@ -123,4 +125,62 @@ module "serviceAccount" {
   google_service_account_description                  = var.google_service_account_description
   google_project_iam_binding_logging_admin            = var.google_project_iam_binding_logging_admin
   google_project_iam_binding_monitoring_metric_writer = var.google_project_iam_binding_monitoring_metric_writer
+  google_project_iam_binding_pubsub_publisher         = var.google_project_iam_binding_pubsub_publisher
 }
+
+module "pubsub" {
+  source                            = "./pub-sub-module"
+  pubsub_message_retention_duration = var.pubsub_message_retention_duration
+  pubsub_topic_name                 = var.pubsub_topic_name
+}
+
+module "vpc_connectors" {
+  source                  = "./vpc-connector-module"
+  connector_name          = var.connector_name
+  connector_region        = var.connector_region
+  connector_ip_cidr_range = var.connector_ip_cidr_range
+  vpc_network_name        = module.myvpc.vpc
+  connector_min_instances = var.connector_min_instances
+  connector_max_instances = var.connector_max_instances
+  connector_machine_type  = var.connector_machine_type
+}
+
+module "cloud_functions" {
+  source                                                 = "./cloud_functions"
+  bucket_name                                            = var.bucket_name
+  bucket_object_name                                     = var.bucket_object_name
+  cloud_fun_name                                         = var.cloud_fun_name
+  pubsub_id                                              = module.pubsub.pubsub_id
+  DB_USERNAME                                            = module.cloudSQL.db_username
+  DB_PASSWORD                                            = module.cloudSQL.db_password
+  DB_NAME                                                = module.cloudSQL.database_name
+  DB_HOST                                                = module.cloudSQL.internal_ip
+  cloud_fun_sender                                       = var.cloud_fun_sender
+  cloud_fun_subject                                      = var.cloud_fun_subject
+  DB_PORT                                                = var.DB_PORT
+  DOMAIN_NAME                                            = var.DOMAIN_NAME
+  MAILGUN_KEY_API                                        = var.MAILGUN_KEY_API
+  webapp_env_PORT                                        = var.PORT
+  connector_name                                         = module.vpc_connectors.connector_name
+  cloud_fun_ser_acc_account_id                           = var.cloud_fun_ser_acc_account_id
+  cloud_fun_ser_acc_display_name                         = var.cloud_fun_ser_acc_display_name
+  gcp_project                                            = var.project_id
+  google_project_iam_binding_cloud_fun_run_invoker       = var.google_project_iam_binding_cloud_fun_run_invoker
+  google_project_iam_binding_cloud_fun_pubsub_subscriber = var.google_project_iam_binding_cloud_fun_pubsub_subscriber
+  cloud_fun_ingress_settings                             = var.cloud_fun_ingress_settings
+  cloud_fun_available_memory_mb                          = var.cloud_fun_available_memory_mb
+  cloud_fun_location                                     = var.cloud_fun_location
+  cloud_fun_entry_point                                  = var.cloud_fun_entry_point
+  cloud_fun_event_trigger_event_type                     = var.cloud_fun_event_trigger_event_type
+  cloud_fun_vpc_connector_egress_settings                = var.cloud_fun_vpc_connector_egress_settings
+  cloud_fun_runtime                                      = var.cloud_fun_runtime
+  cloud_fun_available_memory                             = var.cloud_fun_available_memory
+  cloud_fun_timeout_seconds                              = var.cloud_fun_timeout_seconds
+  cloud_fun_max_instance_request_concurrency             = var.cloud_fun_max_instance_request_concurrency
+  cloud_fun_available_cpu                                = var.cloud_fun_available_cpu
+  cloud_fun_retry_policy                                 = var.cloud_fun_retry_policy
+  cloud_fun_trigger_region                               = var.cloud_fun_trigger_region
+  cloud_fun_max_instance_count                           = var.cloud_fun_max_instance_count
+  cloud_fun_min_instance_count                           = var.cloud_fun_min_instance_count
+}
+
