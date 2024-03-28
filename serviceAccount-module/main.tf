@@ -23,3 +23,13 @@ resource "google_project_iam_binding" "monitoring_metric_writer" {
   ]
   depends_on = [ google_service_account.default ]
 }
+
+resource "google_project_iam_binding" "pubsub_publisher" {
+  project = var.project_id
+  role    = var.google_project_iam_binding_pubsub_publisher
+
+  members = [
+    "serviceAccount:${google_service_account.default.email}",
+  ]
+  depends_on = [google_service_account.default]
+}

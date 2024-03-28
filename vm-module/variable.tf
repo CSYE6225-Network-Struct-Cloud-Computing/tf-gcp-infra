@@ -54,3 +54,9 @@ variable "MYSQL_HOST" {
 
 variable "service_account_email" { 
 }
+
+variable "TOPIC_ID" {  
+}
+
+variable "PROJECT_ID" {
+}
