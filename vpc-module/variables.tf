@@ -93,3 +93,18 @@ variable "google_compute_firewall_others_egress_deny_priority" {
 
 variable "google_compute_firewall_others_egress_deny_direction" {
 }
+
+variable "region" {
+}
+
+variable "google_compute_subnetwork_proxy_only_name" {
+}
+
+variable "google_compute_subnetwork_proxy_only_ip_cidr_range" {
+}
+
+variable "google_compute_subnetwork_proxy_only_purpose" {
+}
+
+variable "google_compute_subnetwork_proxy_only_role" {
+}

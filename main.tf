@@ -60,31 +60,35 @@ module "myvpc" {
   google_compute_firewall_others_egress_deny_protocol       = var.google_compute_firewall_others_egress_deny_protocol
   google_compute_firewall_others_egress_deny_priority       = var.google_compute_firewall_others_egress_deny_priority
   google_compute_firewall_others_egress_deny_direction      = var.google_compute_firewall_others_egress_deny_direction
-
+  region                                                    = var.region
+  google_compute_subnetwork_proxy_only_name                 = var.google_compute_subnetwork_proxy_only_name
+  google_compute_subnetwork_proxy_only_ip_cidr_range        = var.google_compute_subnetwork_proxy_only_ip_cidr_range
+  google_compute_subnetwork_proxy_only_purpose              = var.google_compute_subnetwork_proxy_only_purpose
+  google_compute_subnetwork_proxy_only_role                 = var.google_compute_subnetwork_proxy_only_role
 }
 
-module "vm" {
-  source                = "./vm-module"
-  vm_name               = var.vm_name
-  machine_type          = var.machine_type
-  zone                  = var.zone
-  boot_disk_image       = var.boot_disk_image
-  subnetwork            = module.myvpc.webapp_subnet
-  boot_disk_size        = var.boot_disk_size
-  boot_disk_type        = var.boot_disk_type
-  tags                  = module.myvpc.webapp_firewall_tags
-  network_tier          = var.network_tier
-  stack_type            = var.stack_type
-  PORT                  = var.PORT
-  MYSQL_USERNAME        = module.cloudSQL.db_username
-  MYSQL_PASSWORD        = module.cloudSQL.db_password
-  MYSQL_DB_NAME         = module.cloudSQL.database_name
-  MYSQL_HOST            = module.cloudSQL.internal_ip
-  TEST_MYSQL_DB_NAME    = module.cloudSQL.database_name
-  service_account_email = module.serviceAccount.service_account_email
-  TOPIC_ID              = module.pubsub.pubsub_name
-  PROJECT_ID            = var.project_id
-}
+# module "vm" {
+#   source                = "./vm-module"
+#   vm_name               = var.vm_name
+#   machine_type          = var.machine_type
+#   zone                  = var.zone
+#   boot_disk_image       = var.boot_disk_image
+#   subnetwork            = module.myvpc.webapp_subnet
+#   boot_disk_size        = var.boot_disk_size
+#   boot_disk_type        = var.boot_disk_type
+#   tags                  = module.myvpc.webapp_firewall_tags
+#   network_tier          = var.network_tier
+#   stack_type            = var.stack_type
+#   PORT                  = var.PORT
+#   MYSQL_USERNAME        = module.cloudSQL.db_username
+#   MYSQL_PASSWORD        = module.cloudSQL.db_password
+#   MYSQL_DB_NAME         = module.cloudSQL.database_name
+#   MYSQL_HOST            = module.cloudSQL.internal_ip
+#   TEST_MYSQL_DB_NAME    = module.cloudSQL.database_name
+#   service_account_email = module.serviceAccount.service_account_email
+#   TOPIC_ID              = module.pubsub.pubsub_name
+#   PROJECT_ID            = var.project_id
+# }
 
 module "cloudSQL" {
   source                                                               = "./cloudsql-module"
@@ -110,11 +114,12 @@ module "cloudSQL" {
 }
 
 module "dns" {
-  source                       = "./dns-module"
-  vm_instance_ip               = module.vm.vm_instance_ip
+  source = "./dns-module"
+  # vm_instance_ip               = module.vm.vm_instance_ip
   google_dns_managed_zone_name = var.google_dns_managed_zone_name
   google_dns_record_set_type   = var.google_dns_record_set_type
   google_dns_record_set_ttl    = var.google_dns_record_set_ttl
+  load_balancer_ip             = module.vm-template.load_balancer_ip
 }
 
 module "serviceAccount" {
@@ -160,7 +165,7 @@ module "cloud_functions" {
   DB_PORT                                                = var.DB_PORT
   DOMAIN_NAME                                            = var.DOMAIN_NAME
   MAILGUN_KEY_API                                        = var.MAILGUN_KEY_API
-  webapp_env_PORT                                        = var.PORT
+  webapp_env_PORT                                        = var.PORT_LB
   connector_name                                         = module.vpc_connectors.connector_name
   cloud_fun_ser_acc_account_id                           = var.cloud_fun_ser_acc_account_id
   cloud_fun_ser_acc_display_name                         = var.cloud_fun_ser_acc_display_name
@@ -184,3 +189,26 @@ module "cloud_functions" {
   cloud_fun_min_instance_count                           = var.cloud_fun_min_instance_count
 }
 
+module "vm-template" {
+  source             = "./vm-template-module"
+  service_account    = module.serviceAccount.service_account_email
+  subnetwork         = module.myvpc.webapp_subnet
+  PORT               = var.PORT
+  PORT_LB            = var.PORT_LB
+  MYSQL_USERNAME     = module.cloudSQL.db_username
+  MYSQL_PASSWORD     = module.cloudSQL.db_password
+  MYSQL_DB_NAME      = module.cloudSQL.database_name
+  MYSQL_HOST         = module.cloudSQL.internal_ip
+  TEST_MYSQL_DB_NAME = module.cloudSQL.database_name
+  TOPIC_ID           = module.pubsub.pubsub_name
+  PROJECT_ID         = var.project_id
+  tags               = module.myvpc.webapp_firewall_tags
+  machine_type       = var.machine_type
+  boot_disk_type     = var.boot_disk_type
+  boot_disk_size     = var.boot_disk_size
+  source_image       = var.boot_disk_image
+  vpc_id             = module.myvpc.vpc
+  proxy_only_subnet  = module.myvpc.proxy_only_subnet
+  project_id         = var.project_id
+  region             = var.region
+}

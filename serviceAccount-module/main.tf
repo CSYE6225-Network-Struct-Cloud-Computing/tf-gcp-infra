@@ -1,7 +1,7 @@
 resource "google_service_account" "default" {
   account_id   = var.google_service_account_account_id
   display_name = var.google_service_account_display_name
-  description = var.google_service_account_description
+  description  = var.google_service_account_description
 }
 
 resource "google_project_iam_binding" "logging_admin" {
@@ -11,7 +11,7 @@ resource "google_project_iam_binding" "logging_admin" {
   members = [
     "serviceAccount:${google_service_account.default.email}",
   ]
-  depends_on = [ google_service_account.default ]
+  depends_on = [google_service_account.default]
 }
 
 resource "google_project_iam_binding" "monitoring_metric_writer" {
@@ -21,7 +21,7 @@ resource "google_project_iam_binding" "monitoring_metric_writer" {
   members = [
     "serviceAccount:${google_service_account.default.email}",
   ]
-  depends_on = [ google_service_account.default ]
+  depends_on = [google_service_account.default]
 }
 
 resource "google_project_iam_binding" "pubsub_publisher" {
