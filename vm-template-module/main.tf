@@ -1,5 +1,5 @@
 resource "google_compute_region_instance_template" "default" {
-  name        = "vm-template"
+  name        = var.instance_template_name
   description = "This template is used to create vm instances."
   region      = var.region
   tags        = var.tags
@@ -9,8 +9,8 @@ resource "google_compute_region_instance_template" "default" {
 
   disk {
     source_image = var.source_image
-    auto_delete  = true
-    boot         = true
+    auto_delete  = var.instance_template_disk_auto_delete
+    boot         = var.instance_template_disk_boot
     disk_type    = var.boot_disk_type
     disk_size_gb = var.boot_disk_size
   }
@@ -18,7 +18,7 @@ resource "google_compute_region_instance_template" "default" {
   network_interface {
     subnetwork = var.subnetwork
     access_config {
-      network_tier = "STANDARD"
+      network_tier = var.instance_template_network_interface_network_tier
     }
   }
 
@@ -55,105 +55,101 @@ resource "google_compute_region_instance_template" "default" {
 }
 
 resource "google_compute_region_autoscaler" "default" {
-  name   = "my-autoscaler"
+  name   = var.autoscaler_name
   target = google_compute_region_instance_group_manager.default.id
   region = var.region
   autoscaling_policy {
-    max_replicas    = 5
-    min_replicas    = 1
-    cooldown_period = 30 # min 15
+    max_replicas    = var.autoscaler_autoscaling_policy_max_replicas
+    min_replicas    = var.autoscaler_autoscaling_policy_min_replicas
+    cooldown_period = var.autoscaler_autoscaling_policy_cooldown_period
 
     cpu_utilization {
-      target = 0.1
+      target = var.autoscaler_cpu_utilization_target
     }
   }
 }
 
 resource "google_compute_region_instance_group_manager" "default" {
-  name   = "group-manager"
+  name   = var.group_manager_name
   region = var.region
   named_port {
-    name = "http"
-    port = 3000
+    name = var.group_manager_named_port_name
+    port = var.group_manager_named_port_port
   }
   version {
     instance_template = google_compute_region_instance_template.default.id
-    name              = "primary"
+    name              = var.group_manager_version_name
   }
-  base_instance_name = "vm"
+  base_instance_name = var.group_manager_base_instance_name
 }
 
 resource "google_compute_address" "default" {
-  name         = "load-balancer"
-  address_type = "EXTERNAL"
-  network_tier = "STANDARD"
+  name         = var.lb_compute_address_name
+  address_type = var.lb_compute_address_address_type
+  network_tier = var.lb_compute_address_network_tier
   region       = var.region
 }
 
 resource "google_compute_region_health_check" "default" {
-  name                = "basic-check"
-  check_interval_sec  = 5
-  healthy_threshold   = 2
-  timeout_sec         = 2
-  unhealthy_threshold = 2
+  name                = var.health_check_name
+  check_interval_sec  = var.health_check_check_interval_sec
+  healthy_threshold   = var.health_check_healthy_threshold
+  timeout_sec         = var.health_check_timeout_sec
+  unhealthy_threshold = var.health_check_unhealthy_threshold
   http_health_check {
-    request_path = "/healthz"
-    port         = "3000"
-    host         = "omsolanki.me"
+    request_path = var.health_check_http_health_chec_request_path
+    port         = var.health_check_http_health_check_port
+    host         = var.health_check_http_health_check_host
   }
   log_config {
-    enable = true
+    enable = var.health_check_log_config_enable
   }
 }
 
 resource "google_compute_region_backend_service" "default" {
-  name                  = "backend-service"
+  name                  = var.backend_service_name
   region                = var.region
-  load_balancing_scheme = "EXTERNAL_MANAGED"
-  locality_lb_policy    = "ROUND_ROBIN"
+  load_balancing_scheme = var.backend_service_load_balancing_scheme
+  locality_lb_policy    = var.backend_service_locality_lb_policy
   health_checks         = [google_compute_region_health_check.default.id]
-  protocol              = "HTTP"
-  session_affinity      = "NONE"
-  timeout_sec           = 30
+  protocol              = var.backend_service_protocol
+  session_affinity      = var.backend_service_session_affinity
+  timeout_sec           = var.backend_service_timeout_sec
   backend {
     group           = google_compute_region_instance_group_manager.default.instance_group
-    balancing_mode  = "UTILIZATION"
-    capacity_scaler = 1.0
+    balancing_mode  = var.backend_service_backend_balancing_mode
+    capacity_scaler = var.backend_service_backend_capacity_scaler
   }
   log_config {
-    enable      = true
-    sample_rate = 1
+    enable      = var.backend_service_log_config_enable
+    sample_rate = var.backend_service_log_config_sample_rate
   }
 }
 
 resource "google_compute_region_url_map" "default" {
-  name            = "regional-map"
+  name            = var.url_map_name
   region          = var.region
   default_service = google_compute_region_backend_service.default.id
 }
 
 resource "google_compute_region_target_http_proxy" "default" {
-  name    = "proxy"
+  name    = var.target_http_proxy_name
   region  = var.region
   url_map = google_compute_region_url_map.default.id
 }
 
-# provider "google" {
-#   project = var.project_id
-# }
-
 resource "google_compute_forwarding_rule" "default" {
-  name       = "load-balancer-forwarding-rule"
+  name       = var.lb_forwarding_rule_name
   provider   = google-beta
   depends_on = [var.proxy_only_subnet]
   project    = var.project_id
   region     = var.region
 
-  ip_protocol           = "TCP"
-  load_balancing_scheme = "EXTERNAL_MANAGED"
-  port_range            = "443"
+  ip_protocol           = var.lb_forwarding_rule_ip_protocol
+  load_balancing_scheme = var.lb_forwarding_rule_load_balancing_scheme
+  port_range            = var.lb_forwarding_rule_port_range
   target                = google_compute_region_target_http_proxy.default.id
   network               = var.vpc_id
   ip_address            = google_compute_address.default.address
-  network_tier          = "STANDARD"
+  network_tier          = var.lb_forwarding_rule_network_tier
 }

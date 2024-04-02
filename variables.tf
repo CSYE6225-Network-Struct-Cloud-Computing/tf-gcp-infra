@@ -104,7 +104,7 @@ variable "webapp_firewall_ports" {
   default = ["3000"]
 }
 
-variable "webapp-firewall_direction" {
+variable "webapp_firewall_direction" {
   default = "INGRESS"
 }
 
@@ -122,54 +122,54 @@ variable "database_version_SQL" {
   default = "MYSQL_8_0"
 }
 
-variable "google_sql_database_instance_tier" {
+variable "sql_tier" {
   default = "db-f1-micro"
 }
 
-variable "google_sql_database_instance_availability_type" {
+variable "sql_availability_type" {
   default = "REGIONAL"
 }
 
-variable "google_sql_database_instance_disk_type" {
+variable "sql_disk_type" {
   default = "PD_SSD"
 }
 
-variable "google_sql_database_instance_disk_size" {
+variable "sql_disk_size" {
   default = "100"
 }
 
-variable "google_sql_database_instance_backup_configuration_enabled" {
+variable "sql_backup_configuration_enabled" {
   default = true
 }
 
-variable "google_sql_database_instance_backup_configuration_binary_log_enabled" {
+variable "sql_backup_configuration_binary_log_enabled" {
   default = true
 }
 
-variable "google_sql_database_instance_psc_enabled" {
+variable "sql_psc_enabled" {
   default = true
 }
 
-variable "google_sql_database_instance_allowed_consumer_projects" {
+variable "sql_allowed_consumer_projects" {
 }
 
-variable "google_sql_database_instance_ipv4_enabled" {
+variable "sql_ipv4_enabled" {
   default = false
 }
 
-variable "google_sql_database_instance_deletion_protection" {
+variable "sql_deletion_protection" {
   default = false
 }
 
-variable "google_compute_address_address_type" {
+variable "compute_address_address_type" {
   default = "INTERNAL"
 }
 
-variable "google_compute_address_address" {
+variable "compute_address_address" {
   default = "10.0.2.11"
 }
 
-variable "google_compute_forwarding_rule_load_balancing_schema" {
+variable "compute_forwarding_rule_load_balancing_schema" {
   default = ""
 }
 
@@ -185,57 +185,57 @@ variable "PORT" {
   default = 3000
 }
 
-variable "google_compute_firewall_db_allow_name" {
+variable "firewall_db_allow_name" {
   default = "webapp-compute-firewall-allow-db"
 }
 
-variable "google_compute_firewall_db_allow_protocol" {
+variable "firewall_db_allow_protocol" {
   default = "tcp"
 }
 
-variable "google_compute_firewall_db_allow_ports" {
+variable "firewall_db_allow_ports" {
   default = ["3306"]
   type    = list(string)
 }
 
-variable "google_compute_firewall_db_allow_direction" {
+variable "firewall_db_allow_direction" {
   default = "EGRESS"
 }
 
-variable "google_compute_firewall_others_ingress_deny_name" {
+variable "firewall_others_ingress_deny_name" {
   default = "webapp-compute-firewall-deny-others-ingress"
 }
 
-variable "google_compute_firewall_others_ingress_deny_protocol" {
+variable "firewall_others_ingress_deny_protocol" {
   default = "all"
 }
 
-variable "google_compute_firewall_others_ingress_deny_priority" {
+variable "firewall_others_ingress_deny_priority" {
   default = 65534
 }
 
-variable "google_compute_firewall_others_ingress_deny_direction" {
+variable "firewall_others_ingress_deny_direction" {
   default = "INGRESS"
 }
 
-variable "google_compute_firewall_others_ingress_deny_source_ranges" {
+variable "firewall_others_ingress_deny_source_ranges" {
   type    = list(string)
   default = ["0.0.0.0/0"]
 }
 
-variable "google_compute_firewall_others_egress_deny_name" {
+variable "firewall_others_egress_deny_name" {
   default = "webapp-compute-firewall-deny-others-egress"
 }
 
-variable "google_compute_firewall_others_egress_deny_protocol" {
+variable "firewall_others_egress_deny_protocol" {
   default = "all"
 }
 
-variable "google_compute_firewall_others_egress_deny_priority" {
+variable "firewall_others_egress_deny_priority" {
   default = 65534
 }
 
-variable "google_compute_firewall_others_egress_deny_direction" {
+variable "firewall_others_egress_deny_direction" {
   default = "EGRESS"
 }
 
@@ -260,10 +260,10 @@ variable "google_service_account_display_name" {
 variable "google_service_account_description" {
   default = "Created by Terraform for Logging"
 }
-variable "google_project_iam_binding_logging_admin" {
+variable "project_iam_binding_logging_admin" {
   default = "roles/logging.admin"
 }
-variable "google_project_iam_binding_monitoring_metric_writer" {
+variable "project_iam_binding_monitoring_metric_writer" {
   default = "roles/monitoring.metricWriter"
 }
 
@@ -327,15 +327,15 @@ variable "cloud_fun_ser_acc_display_name" {
   default = "Email Verification Cloud Function"
 }
 
-variable "google_project_iam_binding_cloud_fun_run_invoker" {
+variable "project_iam_binding_cloud_fun_run_invoker" {
   default = "roles/run.invoker"
 }
 
-variable "google_project_iam_binding_cloud_fun_pubsub_subscriber" {
+variable "project_iam_binding_cloud_fun_pubsub_subscriber" {
   default = "roles/pubsub.subscriber"
 }
 
-variable "google_project_iam_binding_pubsub_publisher" {
+variable "project_iam_binding_pubsub_publisher" {
   default = "roles/pubsub.publisher"
 }
 
@@ -415,19 +415,252 @@ variable "PORT_LB" {
   default = 443
 }
 
-variable "google_compute_subnetwork_proxy_only_name" {
+variable "subnetwork_proxy_only_name" {
   default = "proxy-only-subnet"
 }
 
-variable "google_compute_subnetwork_proxy_only_ip_cidr_range" {
+variable "subnetwork_proxy_only_ip_cidr_range" {
   default = "10.129.0.0/23"
 }
 
-variable "google_compute_subnetwork_proxy_only_purpose" {
+variable "subnetwork_proxy_only_purpose" {
   default = "REGIONAL_MANAGED_PROXY"
 }
 
-variable "google_compute_subnetwork_proxy_only_role" {
+variable "subnetwork_proxy_only_role" {
   default = "ACTIVE"
 }
 
+variable "firewall_health_check_name" {
+  default = "fw-allow-health-check"
+}
+
+variable "firewall_health_check_allow_protocol" {
+  default = "tcp"
+}
+
+variable "firewall_health_check_allow_ports" {
+  default = ["80"]
+  type    = list(string)
+}
+
+variable "firewall_health_check_direction" {
+  default = "INGRESS"
+}
+
+variable "firewall_health_check_priority" {
+  default = 1000
+}
+
+variable "firewall_health_check_source_ranges" {
+  default = ["130.211.0.0/22", "35.191.0.0/16"]
+  type    = list(string)
+}
+
+variable "firewall_allow_proxy_name" {
+  default = "fw-allow-proxies"
+}
+
+variable "firewall_allow_proxy_allow_ports" {
+  default = ["3000"]
+  type    = list(string)
+}
+
+variable "firewall_allow_proxy_allow_protocol" {
+  default = "tcp"
+}
+
+variable "firewall_allow_proxy_direction" {
+  default = "INGRESS"
+}
+
+variable "firewall_allow_proxy_priority" {
+  default = 1000
+}
+
+variable "firewall_allow_gfe_name" {
+  default = "fw-allow-google-front-end"
+}
+
+variable "firewall_allow_gfe_allow_protocol" {
+  default = "tcp"
+}
+
+variable "firewall_allow_gfe_allow_ports" {
+  default = ["3000"]
+  type    = list(string)
+}
+
+variable "firewall_allow_gfe_direction" {
+  default = "INGRESS"
+}
+
+variable "firewall_allow_gfe_source_ranges" {
+  default = ["130.211.0.0/22", "35.191.0.0/16"]
+  type    = list(string)
+}
+#########################################################
+variable "instance_template_name" {
+  default = "vm-template"
+}
+
+variable "instance_template_disk_auto_delete" {
+  default = true
+}
+
+variable "instance_template_disk_boot" {
+  default = true
+}
+
+variable "instance_template_network_interface_network_tier" {
+  default = "STANDARD"
+}
+
+variable "autoscaler_name" {
+  default = "autoscaler"
+}
+
+variable "autoscaler_autoscaling_policy_max_replicas" {
+  default = 3
+}
+
+variable "autoscaler_autoscaling_policy_min_replicas" {
+  default = 1
+}
+
+variable "autoscaler_autoscaling_policy_cooldown_period" {
+  default = 30
+}
+
+variable "autoscaler_cpu_utilization_target" {
+  default = 0.1
+}
+
+variable "group_manager_name" {
+  default = "group-manager"
+}
+
+variable "group_manager_named_port_name" {
+  default = "http"
+}
+
+variable "group_manager_named_port_port" {
+  default = 3000
+}
+
+variable "group_manager_version_name" {
+  default = "primary"
+}
+
+variable "group_manager_base_instance_name" {
+  default = "vm"
+}
+
+variable "lb_compute_address_name" {
+  default = "load-balancer"
+}
+
+variable "lb_compute_address_address_type" {
+  default = "EXTERNAL"
+}
+
+variable "lb_compute_address_network_tier" {
+  default = "STANDARD"
+}
+
+variable "health_check_name" {
+  default = "basic-check"
+}
+
+variable "health_check_check_interval_sec" {
+  default = 5
+}
+
+variable "health_check_healthy_threshold" {
+  default = 2
+}
+
+variable "health_check_timeout_sec" {
+  default = 2
+}
+
+variable "health_check_unhealthy_threshold" {
+  default = 2
+}
+
+variable "health_check_http_health_chec_request_path" {
+  default = "/healthz"
+}
+
+variable "health_check_http_health_check_port" {
+  default = 3000
+}
+
+variable "health_check_http_health_check_host" {
+  default = "omsolanki.me"
+}
+
+variable "health_check_log_config_enable" {
+  default = true
+}
+
+variable "backend_service_name" {
+  default = "backend-service"
+}
+
+variable "backend_service_load_balancing_scheme" {
+  default = "EXTERNAL_MANAGED"
+}
+variable "backend_service_locality_lb_policy" {
+  default = "ROUND_ROBIN"
+}
+variable "backend_service_protocol" {
+  default = "HTTP"
+}
+variable "backend_service_session_affinity" {
+  default = "NONE"
+}
+variable "backend_service_timeout_sec" {
+  default = 30
+}
+variable "backend_service_backend_balancing_mode" {
+  default = "UTILIZATION"
+}
+variable "backend_service_backend_capacity_scaler" {
+  default = 1.0
+}
+variable "backend_service_log_config_enable" {
+  default = true
+}
+
+variable "backend_service_log_config_sample_rate" {
+  default = 1
+}
+
+variable "url_map_name" {
+  default = "regional-map"
+}
+
+variable "target_http_proxy_name" {
+  default = "proxy"
+}
+
+variable "lb_forwarding_rule_name" {
+  default = "load-balancer-forwarding-rule"
+}
+
+variable "lb_forwarding_rule_ip_protocol" {
+  default = "TCP"
+}
+
+variable "lb_forwarding_rule_load_balancing_scheme" {
+  default = "EXTERNAL_MANAGED"
+}
+
+variable "lb_forwarding_rule_port_range" {
+  default = 443
+}
+
+variable "lb_forwarding_rule_network_tier" {
+  default = "STANDARD"
+}

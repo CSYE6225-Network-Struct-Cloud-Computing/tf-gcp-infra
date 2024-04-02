@@ -62,11 +62,11 @@ variable "gcp_project" {
   type = string
 }
 
-variable "google_project_iam_binding_cloud_fun_run_invoker" {
+variable "project_iam_binding_cloud_fun_run_invoker" {
   type = string
 }
 
-variable "google_project_iam_binding_cloud_fun_pubsub_subscriber" {
+variable "project_iam_binding_cloud_fun_pubsub_subscriber" {
   type = string
 }
 

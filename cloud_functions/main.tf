@@ -9,7 +9,7 @@ resource "google_service_account" "cloud_fun_ser_acc_account" {
 
 resource "google_project_iam_binding" "cloud_fun_run_invoker" {
   project = var.gcp_project
-  role    = var.google_project_iam_binding_cloud_fun_run_invoker
+  role    = var.project_iam_binding_cloud_fun_run_invoker
 
   members = [
     "serviceAccount:${google_service_account.cloud_fun_ser_acc_account.email}",
@@ -20,7 +20,7 @@ resource "google_project_iam_binding" "cloud_fun_run_invoker" {
 
 resource "google_project_iam_binding" "cloud_fun_pubsub_subscriber" {
   project = var.gcp_project
-  role    = var.google_project_iam_binding_cloud_fun_pubsub_subscriber
+  role    = var.project_iam_binding_cloud_fun_pubsub_subscriber
 
   members = [
     "serviceAccount:${google_service_account.cloud_fun_ser_acc_account.email}",

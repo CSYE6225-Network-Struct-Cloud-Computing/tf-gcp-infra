@@ -39,99 +39,100 @@ resource "google_compute_route" "webapp_subnet_route" {
 #     ports    = var.webapp_firewall_ports
 #   }
 
-#   direction     = var.webapp-firewall_direction
+#   direction     = var.webapp_firewall_direction
 #   target_tags   = var.webapp_firewall_target_tags
 #   source_ranges = var.webapp_firewall_source_ranges
 # }
 
 resource "google_compute_firewall" "allow_db" {
-  name    = var.google_compute_firewall_db_allow_name
+  name    = var.firewall_db_allow_name
   network = google_compute_network.vpc.id
   allow {
-    protocol = var.google_compute_firewall_db_allow_protocol
-    ports    = var.google_compute_firewall_db_allow_ports
+    protocol = var.firewall_db_allow_protocol
+    ports    = var.firewall_db_allow_ports
   }
 
-  direction          = var.google_compute_firewall_db_allow_direction
+  direction          = var.firewall_db_allow_direction
   target_tags        = var.webapp_firewall_target_tags
   destination_ranges = [var.db_subnet_cidr]
 }
 
 
 resource "google_compute_firewall" "others_ingress_deny" {
-  name    = var.google_compute_firewall_others_ingress_deny_name
+  name    = var.firewall_others_ingress_deny_name
   network = google_compute_network.vpc.id
 
   deny {
-    protocol = var.google_compute_firewall_others_ingress_deny_protocol
+    protocol = var.firewall_others_ingress_deny_protocol
   }
 
-  priority      = var.google_compute_firewall_others_ingress_deny_priority
-  direction     = var.google_compute_firewall_others_ingress_deny_direction
-  source_ranges = var.google_compute_firewall_others_ingress_deny_source_ranges
+  priority      = var.firewall_others_ingress_deny_priority
+  direction     = var.firewall_others_ingress_deny_direction
+  source_ranges = var.firewall_others_ingress_deny_source_ranges
 }
 
 # resource "google_compute_firewall" "others_egress_deny" {
-#   name    = var.google_compute_firewall_others_egress_deny_name
+#   name    = var.firewall_others_egress_deny_name
 #   network = google_compute_network.vpc.id
 
 #   deny {
-#     protocol = var.google_compute_firewall_others_egress_deny_protocol
+#     protocol = var.firewall_others_egress_deny_protocol
 #   }
 
-#   priority      = var.google_compute_firewall_others_egress_deny_priority
-#   direction     = var.google_compute_firewall_others_egress_deny_direction
+#   priority      = var.firewall_others_egress_deny_priority
+#   direction     = var.firewall_others_egress_deny_direction
 #   source_ranges = [var.webapp_subnet_cidr]
 # }
 
 # https://cloud.google.com/load-balancing/docs/https/setting-up-reg-ext-https-lb
 resource "google_compute_subnetwork" "proxy_only" {
-  name          = "proxy-only-subnet"
-  ip_cidr_range = "10.129.0.0/23"
+  name          = var.subnetwork_proxy_only_name
+  ip_cidr_range = var.subnetwork_proxy_only_ip_cidr_range
   network       = google_compute_network.vpc.id
-  purpose       = "REGIONAL_MANAGED_PROXY"
+  purpose       = var.subnetwork_proxy_only_purpose
   region        = var.region
-  role          = "ACTIVE"
+  role          = var.subnetwork_proxy_only_role
 }
 
-resource "google_compute_firewall" "default" {
-  name = "fw-allow-health-check"
+
+resource "google_compute_firewall" "health_check" {
+  name = var.firewall_health_check_name
   allow {
-    protocol = "tcp"
-    ports    = ["80"]
+    protocol = var.firewall_health_check_allow_protocol
+    ports    = var.firewall_health_check_allow_ports
   }
-  direction          = "INGRESS"
+  direction          = var.firewall_health_check_direction
   network            = google_compute_network.vpc.id
-  priority           = 1000
-  source_ranges      = ["130.211.0.0/22", "35.191.0.0/16"]
+  priority           = var.firewall_health_check_priority
+  source_ranges      = var.firewall_health_check_source_ranges
   target_tags        = var.webapp_firewall_target_tags
   destination_ranges = [google_compute_subnetwork.webapp_subnet.ip_cidr_range]
 }
 
 resource "google_compute_firewall" "allow_proxy" {
-  name = "fw-allow-proxies"
+  name = var.firewall_allow_proxy_name
   allow {
-    ports    = ["3000"]
-    protocol = "tcp"
+    ports    = var.firewall_allow_proxy_allow_ports
+    protocol = var.firewall_allow_proxy_allow_protocol
   }
 
-  direction          = "INGRESS"
+  direction          = var.firewall_allow_proxy_direction
   network            = google_compute_network.vpc.id
-  priority           = 1000
+  priority           = var.firewall_allow_proxy_priority
   source_ranges      = [google_compute_subnetwork.proxy_only.ip_cidr_range]
   target_tags        = var.webapp_firewall_target_tags
   destination_ranges = [google_compute_subnetwork.webapp_subnet.ip_cidr_range]
 }
 
 resource "google_compute_firewall" "allow_gfe" {
-  name    = "fw-allow-google-front-end"
+  name    = var.firewall_allow_gfe_name
   network = google_compute_network.vpc.id
   allow {
-    protocol = "tcp"
-    ports    = ["3000"]
+    protocol = var.firewall_allow_gfe_allow_protocol
+    ports    = var.firewall_allow_gfe_allow_ports
   }
   target_tags        = var.webapp_firewall_target_tags
-  direction          = "INGRESS"
-  source_ranges      = ["130.211.0.0/22", "35.191.0.0/16"]
+  direction          = var.firewall_allow_gfe_direction
+  source_ranges      = var.firewall_allow_gfe_source_ranges
   destination_ranges = [var.webapp_subnet_cidr]
 }

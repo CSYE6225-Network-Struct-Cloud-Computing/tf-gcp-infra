@@ -38,7 +38,7 @@ variable "webapp_firewall_ports" {
   type = list(string)
 }
 
-variable "webapp-firewall_direction" {
+variable "webapp_firewall_direction" {
 }
 
 variable "webapp_firewall_target_tags" {
@@ -55,56 +55,109 @@ variable "webapp_subnet_route_dest_range" {
 variable "webapp_subnet_route_next_hop_gateway" {
 }
 
-variable "google_compute_firewall_db_allow_name" {
+variable "firewall_db_allow_name" {
 }
 
-variable "google_compute_firewall_db_allow_protocol" {
+variable "firewall_db_allow_protocol" {
 }
 
-variable "google_compute_firewall_db_allow_ports" {
+variable "firewall_db_allow_ports" {
 }
 
-variable "google_compute_firewall_db_allow_direction" {
+variable "firewall_db_allow_direction" {
 }
 
-variable "google_compute_firewall_others_ingress_deny_name" {
+variable "firewall_others_ingress_deny_name" {
 }
 
-variable "google_compute_firewall_others_ingress_deny_protocol" {
+variable "firewall_others_ingress_deny_protocol" {
 }
 
-variable "google_compute_firewall_others_ingress_deny_priority" {
+variable "firewall_others_ingress_deny_priority" {
 }
 
-variable "google_compute_firewall_others_ingress_deny_direction" {
+variable "firewall_others_ingress_deny_direction" {
 }
 
-variable "google_compute_firewall_others_ingress_deny_source_ranges" {
+variable "firewall_others_ingress_deny_source_ranges" {
 }
 
-variable "google_compute_firewall_others_egress_deny_name" {
+variable "firewall_others_egress_deny_name" {
 }
 
-variable "google_compute_firewall_others_egress_deny_protocol" {
+variable "firewall_others_egress_deny_protocol" {
 }
 
-variable "google_compute_firewall_others_egress_deny_priority" {
+variable "firewall_others_egress_deny_priority" {
 }
 
-variable "google_compute_firewall_others_egress_deny_direction" {
+variable "firewall_others_egress_deny_direction" {
 }
 
 variable "region" {
 }
 
-variable "google_compute_subnetwork_proxy_only_name" {
+variable "subnetwork_proxy_only_name" {
 }
 
-variable "google_compute_subnetwork_proxy_only_ip_cidr_range" {
+variable "subnetwork_proxy_only_ip_cidr_range" {
 }
 
-variable "google_compute_subnetwork_proxy_only_purpose" {
+variable "subnetwork_proxy_only_purpose" {
 }
 
-variable "google_compute_subnetwork_proxy_only_role" {
+variable "subnetwork_proxy_only_role" {
+}
+
+variable "firewall_health_check_name" {
+}
+
+variable "firewall_health_check_allow_protocol" {
+}
+
+variable "firewall_health_check_allow_ports" {
+  type = list(string)
+}
+
+variable "firewall_health_check_direction" {
+}
+
+variable "firewall_health_check_priority" {
+}
+
+variable "firewall_health_check_source_ranges" {
+  type = list(string)
+}
+
+variable "firewall_allow_proxy_name" {
+}
+
+variable "firewall_allow_proxy_allow_ports" {
+  type = list(string)
+}
+
+variable "firewall_allow_proxy_allow_protocol" {
+}
+
+variable "firewall_allow_proxy_direction" {
+}
+
+variable "firewall_allow_proxy_priority" {
+}
+
+variable "firewall_allow_gfe_name" {
+}
+
+variable "firewall_allow_gfe_allow_protocol" {
+}
+
+variable "firewall_allow_gfe_allow_ports" {
+  type = list(string)
+}
+
+variable "firewall_allow_gfe_direction" {
+}
+
+variable "firewall_allow_gfe_source_ranges" {
+  type = list(string)
 }
