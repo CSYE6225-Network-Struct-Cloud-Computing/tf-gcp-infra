@@ -53,7 +53,7 @@
 -   webapp_firewall_name =
 -   webapp_firewall_protocol =
 -   webapp_firewall_ports = # list(string)
--   webapp-firewall_direction =
+-   webapp_firewall_direction =
 -   webapp_firewall_target_tags = # list(string)
 -   webapp_firewall_source_ranges = # list(string)
 

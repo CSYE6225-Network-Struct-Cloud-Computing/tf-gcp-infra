@@ -6,9 +6,9 @@ variable "google_service_account_display_name" {
 }
 variable "google_service_account_description" {
 }
-variable "google_project_iam_binding_logging_admin" {
+variable "project_iam_binding_logging_admin" {
 }
-variable "google_project_iam_binding_monitoring_metric_writer" {
+variable "project_iam_binding_monitoring_metric_writer" {
 }
-variable "google_project_iam_binding_pubsub_publisher" {
+variable "project_iam_binding_pubsub_publisher" {
 }

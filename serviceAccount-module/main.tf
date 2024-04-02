@@ -6,7 +6,7 @@ resource "google_service_account" "default" {
 
 resource "google_project_iam_binding" "logging_admin" {
   project = var.project_id
-  role    = var.google_project_iam_binding_logging_admin
+  role    = var.project_iam_binding_logging_admin
 
   members = [
     "serviceAccount:${google_service_account.default.email}",
@@ -16,7 +16,7 @@ resource "google_project_iam_binding" "logging_admin" {
 
 resource "google_project_iam_binding" "monitoring_metric_writer" {
   project = var.project_id
-  role    = var.google_project_iam_binding_monitoring_metric_writer
+  role    = var.project_iam_binding_monitoring_metric_writer
 
   members = [
     "serviceAccount:${google_service_account.default.email}",
@@ -26,7 +26,7 @@ resource "google_project_iam_binding" "monitoring_metric_writer" {
 
 resource "google_project_iam_binding" "pubsub_publisher" {
   project = var.project_id
-  role    = var.google_project_iam_binding_pubsub_publisher
+  role    = var.project_iam_binding_pubsub_publisher
 
   members = [
     "serviceAccount:${google_service_account.default.email}",
