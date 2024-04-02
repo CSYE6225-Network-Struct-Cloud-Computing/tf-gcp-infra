@@ -410,3 +410,24 @@ variable "cloud_fun_sender" {
 variable "cloud_fun_subject" {
   default = "CSYE 6225 - Please Verify your account."
 }
+
+variable "PORT_LB" {
+  default = 443
+}
+
+variable "google_compute_subnetwork_proxy_only_name" {
+  default = "proxy-only-subnet"
+}
+
+variable "google_compute_subnetwork_proxy_only_ip_cidr_range" {
+  default = "10.129.0.0/23"
+}
+
+variable "google_compute_subnetwork_proxy_only_purpose" {
+  default = "REGIONAL_MANAGED_PROXY"
+}
+
+variable "google_compute_subnetwork_proxy_only_role" {
+  default = "ACTIVE"
+}
+

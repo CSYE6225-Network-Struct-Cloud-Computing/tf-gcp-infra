@@ -11,5 +11,9 @@ output "vpc" {
 }
 
 output "webapp_firewall_tags" {
-  value = google_compute_firewall.vpc_firewall.target_tags
+  value = var.webapp_firewall_target_tags
+}
+
+output "proxy_only_subnet" {
+  value = google_compute_subnetwork.proxy_only
 }

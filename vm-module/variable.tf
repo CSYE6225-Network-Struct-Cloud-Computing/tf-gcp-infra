@@ -52,10 +52,10 @@ variable "TEST_MYSQL_DB_NAME" {
 variable "MYSQL_HOST" {
 }
 
-variable "service_account_email" { 
+variable "service_account_email" {
 }
 
-variable "TOPIC_ID" {  
+variable "TOPIC_ID" {
 }
 
 variable "PROJECT_ID" {

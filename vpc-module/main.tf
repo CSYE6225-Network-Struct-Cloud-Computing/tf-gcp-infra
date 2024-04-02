@@ -30,18 +30,19 @@ resource "google_compute_route" "webapp_subnet_route" {
   next_hop_gateway = var.webapp_subnet_route_next_hop_gateway
 }
 
-resource "google_compute_firewall" "vpc_firewall" {
-  name    = var.webapp_firewall_name
-  network = google_compute_network.vpc.id
-  allow {
-    protocol = var.webapp_firewall_protocol
-    ports    = var.webapp_firewall_ports
-  }
+# Commented this as now load balancer is handlening this
+# resource "google_compute_firewall" "vpc_firewall" {
+#   name    = var.webapp_firewall_name
+#   network = google_compute_network.vpc.id
+#   allow {
+#     protocol = var.webapp_firewall_protocol
+#     ports    = var.webapp_firewall_ports
+#   }
 
-  direction     = var.webapp-firewall_direction
-  target_tags   = var.webapp_firewall_target_tags
-  source_ranges = var.webapp_firewall_source_ranges
-}
+#   direction     = var.webapp-firewall_direction
+#   target_tags   = var.webapp_firewall_target_tags
+#   source_ranges = var.webapp_firewall_source_ranges
+# }
 
 resource "google_compute_firewall" "allow_db" {
   name    = var.google_compute_firewall_db_allow_name
@@ -82,3 +83,55 @@ resource "google_compute_firewall" "others_ingress_deny" {
 #   direction     = var.google_compute_firewall_others_egress_deny_direction
 #   source_ranges = [var.webapp_subnet_cidr]
 # }
+
+# https://cloud.google.com/load-balancing/docs/https/setting-up-reg-ext-https-lb
+resource "google_compute_subnetwork" "proxy_only" {
+  name          = "proxy-only-subnet"
+  ip_cidr_range = "10.129.0.0/23"
+  network       = google_compute_network.vpc.id
+  purpose       = "REGIONAL_MANAGED_PROXY"
+  region        = var.region
+  role          = "ACTIVE"
+}
+
+resource "google_compute_firewall" "default" {
+  name = "fw-allow-health-check"
+  allow {
+    protocol = "tcp"
+    ports    = ["80"]
+  }
+  direction          = "INGRESS"
+  network            = google_compute_network.vpc.id
+  priority           = 1000
+  source_ranges      = ["130.211.0.0/22", "35.191.0.0/16"]
+  target_tags        = var.webapp_firewall_target_tags
+  destination_ranges = [google_compute_subnetwork.webapp_subnet.ip_cidr_range]
+}
+
+resource "google_compute_firewall" "allow_proxy" {
+  name = "fw-allow-proxies"
+  allow {
+    ports    = ["3000"]
+    protocol = "tcp"
+  }
+
+  direction          = "INGRESS"
+  network            = google_compute_network.vpc.id
+  priority           = 1000
+  source_ranges      = [google_compute_subnetwork.proxy_only.ip_cidr_range]
+  target_tags        = var.webapp_firewall_target_tags
+  destination_ranges = [google_compute_subnetwork.webapp_subnet.ip_cidr_range]
+}
+
+resource "google_compute_firewall" "allow_gfe" {
+  name    = "fw-allow-google-front-end"
+  network = google_compute_network.vpc.id
+  allow {
+    protocol = "tcp"
+    ports    = ["3000"]
+  }
+  target_tags        = var.webapp_firewall_target_tags
+  direction          = "INGRESS"
+  source_ranges      = ["130.211.0.0/22", "35.191.0.0/16"]
+  destination_ranges = [var.webapp_subnet_cidr]
+}
