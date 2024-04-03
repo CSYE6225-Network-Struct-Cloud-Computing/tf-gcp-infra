@@ -46,7 +46,10 @@ variable "source_image" {
 variable "vpc_id" {
 }
 
-variable "proxy_only_subnet" {
+# variable "proxy_only_subnet" {
+# }
+
+variable "webapp_subnet_full" {
 }
 
 variable "project_id" {
@@ -185,4 +188,13 @@ variable "lb_forwarding_rule_port_range" {
 }
 
 variable "lb_forwarding_rule_network_tier" {
+}
+
+variable "DOMAIN_NAME" {
+}
+
+variable "ssl-certificate-name" {
+}
+
+variable "group_manager_auto_healing_initial_delay_sec" {
 }

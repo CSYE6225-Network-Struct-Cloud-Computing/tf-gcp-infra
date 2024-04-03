@@ -638,7 +638,7 @@ variable "backend_service_log_config_sample_rate" {
 }
 
 variable "url_map_name" {
-  default = "regional-map"
+  default = "my-map"
 }
 
 variable "target_http_proxy_name" {
@@ -663,4 +663,12 @@ variable "lb_forwarding_rule_port_range" {
 
 variable "lb_forwarding_rule_network_tier" {
   default = "STANDARD"
+}
+
+variable "ssl-certificate-name" {
+  default = "myservice-ssl-cert"
+}
+
+variable "group_manager_auto_healing_initial_delay_sec" {
+  default = 60
 }
