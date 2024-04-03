@@ -224,7 +224,7 @@ module "vm-template" {
   boot_disk_size                                   = var.boot_disk_size
   source_image                                     = var.boot_disk_image
   vpc_id                                           = module.myvpc.vpc
-  proxy_only_subnet                                = module.myvpc.proxy_only_subnet
+  webapp_subnet_full                               = module.myvpc.webapp_subnet_full
   project_id                                       = var.project_id
   region                                           = var.region
   instance_template_name                           = var.instance_template_name
@@ -241,6 +241,7 @@ module "vm-template" {
   group_manager_named_port_port                    = var.group_manager_named_port_port
   group_manager_version_name                       = var.group_manager_version_name
   group_manager_base_instance_name                 = var.group_manager_base_instance_name
+  group_manager_auto_healing_initial_delay_sec     = var.group_manager_auto_healing_initial_delay_sec
   lb_compute_address_name                          = var.lb_compute_address_name
   lb_compute_address_address_type                  = var.lb_compute_address_address_type
   lb_compute_address_network_tier                  = var.lb_compute_address_network_tier
@@ -270,4 +271,6 @@ module "vm-template" {
   lb_forwarding_rule_load_balancing_scheme         = var.lb_forwarding_rule_load_balancing_scheme
   lb_forwarding_rule_port_range                    = var.lb_forwarding_rule_port_range
   lb_forwarding_rule_network_tier                  = var.lb_forwarding_rule_network_tier
+  DOMAIN_NAME                                      = var.DOMAIN_NAME
+  ssl-certificate-name                             = var.ssl-certificate-name
 }

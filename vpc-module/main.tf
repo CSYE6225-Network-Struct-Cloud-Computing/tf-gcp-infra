@@ -85,14 +85,14 @@ resource "google_compute_firewall" "others_ingress_deny" {
 # }
 
 # https://cloud.google.com/load-balancing/docs/https/setting-up-reg-ext-https-lb
-resource "google_compute_subnetwork" "proxy_only" {
-  name          = var.subnetwork_proxy_only_name
-  ip_cidr_range = var.subnetwork_proxy_only_ip_cidr_range
-  network       = google_compute_network.vpc.id
-  purpose       = var.subnetwork_proxy_only_purpose
-  region        = var.region
-  role          = var.subnetwork_proxy_only_role
-}
+# resource "google_compute_subnetwork" "proxy_only" {
+#   name          = var.subnetwork_proxy_only_name
+#   ip_cidr_range = var.subnetwork_proxy_only_ip_cidr_range
+#   network       = google_compute_network.vpc.id
+#   purpose       = var.subnetwork_proxy_only_purpose
+#   region        = var.region
+#   role          = var.subnetwork_proxy_only_role
+# }
 
 
 resource "google_compute_firewall" "health_check" {
@@ -109,20 +109,20 @@ resource "google_compute_firewall" "health_check" {
   destination_ranges = [google_compute_subnetwork.webapp_subnet.ip_cidr_range]
 }
 
-resource "google_compute_firewall" "allow_proxy" {
-  name = var.firewall_allow_proxy_name
-  allow {
-    ports    = var.firewall_allow_proxy_allow_ports
-    protocol = var.firewall_allow_proxy_allow_protocol
-  }
+# resource "google_compute_firewall" "allow_proxy" {
+#   name = var.firewall_allow_proxy_name
+#   allow {
+#     ports    = var.firewall_allow_proxy_allow_ports
+#     protocol = var.firewall_allow_proxy_allow_protocol
+#   }
 
-  direction          = var.firewall_allow_proxy_direction
-  network            = google_compute_network.vpc.id
-  priority           = var.firewall_allow_proxy_priority
-  source_ranges      = [google_compute_subnetwork.proxy_only.ip_cidr_range]
-  target_tags        = var.webapp_firewall_target_tags
-  destination_ranges = [google_compute_subnetwork.webapp_subnet.ip_cidr_range]
-}
+#   direction          = var.firewall_allow_proxy_direction
+#   network            = google_compute_network.vpc.id
+#   priority           = var.firewall_allow_proxy_priority
+#   source_ranges      = [google_compute_subnetwork.webapp_subnet.ip_cidr_range]
+#   target_tags        = var.webapp_firewall_target_tags
+#   destination_ranges = [google_compute_subnetwork.webapp_subnet.ip_cidr_range]
+# }
 
 resource "google_compute_firewall" "allow_gfe" {
   name    = var.firewall_allow_gfe_name

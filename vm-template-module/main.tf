@@ -81,16 +81,22 @@ resource "google_compute_region_instance_group_manager" "default" {
     name              = var.group_manager_version_name
   }
   base_instance_name = var.group_manager_base_instance_name
+
+  depends_on = [google_compute_health_check.default]
+  auto_healing_policies {
+    health_check      = google_compute_health_check.default.id
+    initial_delay_sec = var.group_manager_auto_healing_initial_delay_sec
+  }
 }
 
-resource "google_compute_address" "default" {
+resource "google_compute_global_address" "default" {
   name         = var.lb_compute_address_name
   address_type = var.lb_compute_address_address_type
-  network_tier = var.lb_compute_address_network_tier
-  region       = var.region
+  # network_tier = var.lb_compute_address_network_tier
+  # region       = var.region
 }
 
-resource "google_compute_region_health_check" "default" {
+resource "google_compute_health_check" "default" {
   name                = var.health_check_name
   check_interval_sec  = var.health_check_check_interval_sec
   healthy_threshold   = var.health_check_healthy_threshold
@@ -106,15 +112,15 @@ resource "google_compute_region_health_check" "default" {
   }
 }
 
-resource "google_compute_region_backend_service" "default" {
-  name                  = var.backend_service_name
-  region                = var.region
+resource "google_compute_backend_service" "default" {
+  name = var.backend_service_name
+  # region                = var.region
   load_balancing_scheme = var.backend_service_load_balancing_scheme
-  locality_lb_policy    = var.backend_service_locality_lb_policy
-  health_checks         = [google_compute_region_health_check.default.id]
-  protocol              = var.backend_service_protocol
-  session_affinity      = var.backend_service_session_affinity
-  timeout_sec           = var.backend_service_timeout_sec
+  # locality_lb_policy    = var.backend_service_locality_lb_policy
+  health_checks    = [google_compute_health_check.default.id]
+  protocol         = var.backend_service_protocol
+  session_affinity = var.backend_service_session_affinity
+  timeout_sec      = var.backend_service_timeout_sec
   backend {
     group           = google_compute_region_instance_group_manager.default.instance_group
     balancing_mode  = var.backend_service_backend_balancing_mode
@@ -126,30 +132,36 @@ resource "google_compute_region_backend_service" "default" {
   }
 }
 
-resource "google_compute_region_url_map" "default" {
-  name            = var.url_map_name
-  region          = var.region
-  default_service = google_compute_region_backend_service.default.id
+resource "google_compute_url_map" "default" {
+  name = var.url_map_name
+  # region          = var.region
+  default_service = google_compute_backend_service.default.id
 }
 
-resource "google_compute_region_target_http_proxy" "default" {
-  name    = var.target_http_proxy_name
-  region  = var.region
-  url_map = google_compute_region_url_map.default.id
+resource "google_compute_managed_ssl_certificate" "lb_default" {
+  name = var.ssl-certificate-name
+  managed {
+    domains = [var.DOMAIN_NAME]
+  }
 }
 
-resource "google_compute_forwarding_rule" "default" {
-  name       = var.lb_forwarding_rule_name
-  provider   = google-beta
-  depends_on = [var.proxy_only_subnet]
-  project    = var.project_id
-  region     = var.region
+resource "google_compute_target_https_proxy" "default" {
+  name = var.target_http_proxy_name
+  # region  = var.region
+  url_map          = google_compute_url_map.default.id
+  ssl_certificates = [google_compute_managed_ssl_certificate.lb_default.name]
+}
+
+resource "google_compute_global_forwarding_rule" "default" {
+  name = var.lb_forwarding_rule_name
+  # project    = var.project_id
+  # region     = var.region
 
   ip_protocol           = var.lb_forwarding_rule_ip_protocol
   load_balancing_scheme = var.lb_forwarding_rule_load_balancing_scheme
   port_range            = var.lb_forwarding_rule_port_range
-  target                = google_compute_region_target_http_proxy.default.id
-  network               = var.vpc_id
-  ip_address            = google_compute_address.default.address
-  network_tier          = var.lb_forwarding_rule_network_tier
+  target                = google_compute_target_https_proxy.default.id
+  # network               = var.vpc_id
+  ip_address = google_compute_global_address.default.address
+  # network_tier          = var.lb_forwarding_rule_network_tier
 }
