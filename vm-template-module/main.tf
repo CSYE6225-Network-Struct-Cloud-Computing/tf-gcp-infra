@@ -13,6 +13,12 @@ resource "google_compute_region_instance_template" "default" {
     boot         = var.instance_template_disk_boot
     disk_type    = var.boot_disk_type
     disk_size_gb = var.boot_disk_size
+    source_image_encryption_key {
+      kms_key_self_link = var.crypto_vm_key_id
+    }
+    disk_encryption_key {
+      kms_key_self_link = var.crypto_vm_key_id
+    }
   }
 
   network_interface {

@@ -14,6 +14,17 @@ resource "google_project_iam_binding" "logging_admin" {
   depends_on = [google_service_account.default]
 }
 
+resource "google_kms_crypto_key_iam_binding" "vm-crypto_key" {
+  provider      = google-beta
+  crypto_key_id = var.vm_crypto_key
+  role          = var.kms_role
+
+  members = [
+    "serviceAccount:service-${var.account_no}@compute-system.iam.gserviceaccount.com",
+  ]
+  depends_on = [google_service_account.default]
+}
+
 resource "google_project_iam_binding" "monitoring_metric_writer" {
   project = var.project_id
   role    = var.project_iam_binding_monitoring_metric_writer

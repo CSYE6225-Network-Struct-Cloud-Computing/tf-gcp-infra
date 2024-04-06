@@ -54,3 +54,9 @@ variable "google_sql_database_name" {
 
 variable "google_sql_user_name" {
 }
+
+variable "crypto_sql_key_id" {
+}
+
+variable "project_id" {
+}

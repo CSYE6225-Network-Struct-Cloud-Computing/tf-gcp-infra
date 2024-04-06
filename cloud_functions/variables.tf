@@ -135,3 +135,6 @@ variable "cloud_fun_sender" {
 
 variable "cloud_fun_subject" {
 }
+
+variable "bucket_crypto_key_id" {
+}
