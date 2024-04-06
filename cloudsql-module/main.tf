@@ -6,6 +6,8 @@ resource "google_sql_database_instance" "default" {
   name             = "sqldatabaseinstancename"
   region           = "us-east1"
   database_version = var.database_version_SQL
+  provider         = google-beta
+  project          = var.project_id
   settings {
     tier              = var.sql_tier
     availability_type = var.sql_availability_type
@@ -24,6 +26,8 @@ resource "google_sql_database_instance" "default" {
     }
   }
   deletion_protection = var.sql_deletion_protection
+
+  encryption_key_name = var.crypto_sql_key_id
 }
 
 resource "google_compute_address" "default" {

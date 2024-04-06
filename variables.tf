@@ -609,7 +609,7 @@ variable "backend_service_name" {
 }
 
 variable "backend_service_load_balancing_scheme" {
-  default = "EXTERNAL_MANAGED"
+  default = "EXTERNAL" # EXTERNAL_MANAGED for Global
 }
 variable "backend_service_locality_lb_policy" {
   default = "ROUND_ROBIN"
@@ -654,7 +654,7 @@ variable "lb_forwarding_rule_ip_protocol" {
 }
 
 variable "lb_forwarding_rule_load_balancing_scheme" {
-  default = "EXTERNAL_MANAGED"
+  default = "EXTERNAL" # EXTERNAL_MANAGED for Global
 }
 
 variable "lb_forwarding_rule_port_range" {
@@ -671,4 +671,35 @@ variable "ssl-certificate-name" {
 
 variable "group_manager_auto_healing_initial_delay_sec" {
   default = 60
+}
+
+variable "keyring_name" {
+  default = "my-keyring"
+}
+
+variable "vm_crypto_key_name" {
+  default = "virtual-machine-crypto-key"
+}
+
+variable "sql_crypto_key_name" {
+  default = "sql-crypto-key"
+}
+
+variable "bucket_crypto_key_name" {
+  default = "bucket-crypto-key"
+}
+
+variable "kms_crypto_key_rotation_period" {
+  default = "2592000s"
+}
+
+variable "account_no" {
+}
+
+variable "kms_role" {
+  description = "roles/cloudkms.cryptoKeyEncrypterDecrypter"
+}
+
+variable "sa_cloud_sql_crypto_key" {
+  default = "sqladmin.googleapis.com"
 }

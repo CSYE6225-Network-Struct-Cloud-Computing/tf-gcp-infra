@@ -198,3 +198,6 @@ variable "ssl-certificate-name" {
 
 variable "group_manager_auto_healing_initial_delay_sec" {
 }
+
+variable "crypto_vm_key_id" {
+}

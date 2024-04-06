@@ -12,3 +12,12 @@ variable "project_iam_binding_monitoring_metric_writer" {
 }
 variable "project_iam_binding_pubsub_publisher" {
 }
+
+variable "vm_crypto_key" {
+}
+
+variable "account_no" {
+}
+
+variable "kms_role" {
+}
