@@ -31,9 +31,6 @@ variable "sql_backup_configuration_binary_log_enabled" {
 variable "sql_psc_enabled" {
 }
 
-variable "sql_allowed_consumer_projects" {
-}
-
 variable "sql_ipv4_enabled" {
 }
 

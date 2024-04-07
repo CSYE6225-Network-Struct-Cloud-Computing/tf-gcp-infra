@@ -20,7 +20,7 @@ resource "google_sql_database_instance" "default" {
     ip_configuration {
       psc_config {
         psc_enabled               = var.sql_psc_enabled
-        allowed_consumer_projects = var.sql_allowed_consumer_projects
+        allowed_consumer_projects = [var.project_id]
       }
       ipv4_enabled = var.sql_ipv4_enabled
     }
