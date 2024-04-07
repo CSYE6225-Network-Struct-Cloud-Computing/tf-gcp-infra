@@ -128,7 +128,7 @@ module "cloudSQL" {
   google_sql_user_name                          = var.google_sql_user_name
   crypto_sql_key_id                             = module.kms.crypto_sql_key_id
   project_id                                    = var.project_id
-  depends_on = [ module.kms ]
+  depends_on                                    = [module.kms]
 }
 
 module "dns" {
