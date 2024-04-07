@@ -11,7 +11,7 @@ jobs:
               uses: actions/checkout@v3
 
             - name: Terraform fmt command
-              run: terraform fmt -check
+              run: terraform fmt -recursive -check
     validate:
         runs-on: ubuntu-latest
         name: Check Terrafrom Validation
