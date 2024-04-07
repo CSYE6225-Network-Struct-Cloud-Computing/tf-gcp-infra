@@ -119,7 +119,6 @@ module "cloudSQL" {
   sql_backup_configuration_enabled              = var.sql_backup_configuration_enabled
   sql_backup_configuration_binary_log_enabled   = var.sql_backup_configuration_binary_log_enabled
   sql_psc_enabled                               = var.sql_psc_enabled
-  sql_allowed_consumer_projects                 = var.sql_allowed_consumer_projects
   sql_ipv4_enabled                              = var.sql_ipv4_enabled
   sql_deletion_protection                       = var.sql_deletion_protection
   compute_address_address_type                  = var.compute_address_address_type
@@ -129,6 +128,7 @@ module "cloudSQL" {
   google_sql_user_name                          = var.google_sql_user_name
   crypto_sql_key_id                             = module.kms.crypto_sql_key_id
   project_id                                    = var.project_id
+  depends_on = [ module.kms ]
 }
 
 module "dns" {

@@ -6,7 +6,7 @@ variable "region" {
 }
 
 variable "vpc_name" {
-  default = "myvpc1"
+  default = "myvpc"
 }
 
 variable "webapp_subnet_cidr" {
@@ -34,7 +34,7 @@ variable "db_subnet_region" {
 }
 
 variable "vm_name" {
-  default = "vm"
+  default = "my-vm"
 }
 
 variable "machine_type" {
@@ -60,7 +60,7 @@ variable "tags" {
 
 variable "boot_disk_size" {
   type    = number
-  default = 100
+  default = 20
 }
 
 variable "network_tier" {
@@ -119,7 +119,7 @@ variable "webapp_firewall_source_ranges" {
 }
 
 variable "database_version_SQL" {
-  default = "MYSQL_8_0"
+  default = "MYSQL_5_7"
 }
 
 variable "sql_tier" {
@@ -148,9 +148,6 @@ variable "sql_backup_configuration_binary_log_enabled" {
 
 variable "sql_psc_enabled" {
   default = true
-}
-
-variable "sql_allowed_consumer_projects" {
 }
 
 variable "sql_ipv4_enabled" {
@@ -642,7 +639,7 @@ variable "url_map_name" {
 }
 
 variable "target_http_proxy_name" {
-  default = "proxy"
+  default = "my-proxy"
 }
 
 variable "lb_forwarding_rule_name" {
@@ -703,3 +700,11 @@ variable "kms_role" {
 variable "sa_cloud_sql_crypto_key" {
   default = "sqladmin.googleapis.com"
 }
+
+##############
+##############
+# account_no
+# MAILGUN_KEY_API
+# bucket_object_name
+# boot_disk_image
+# project_id
