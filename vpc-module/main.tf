@@ -94,21 +94,6 @@ resource "google_compute_firewall" "others_ingress_deny" {
 #   role          = var.subnetwork_proxy_only_role
 # }
 
-
-resource "google_compute_firewall" "health_check" {
-  name = var.firewall_health_check_name
-  allow {
-    protocol = var.firewall_health_check_allow_protocol
-    ports    = var.firewall_health_check_allow_ports
-  }
-  direction          = var.firewall_health_check_direction
-  network            = google_compute_network.vpc.id
-  priority           = var.firewall_health_check_priority
-  source_ranges      = var.firewall_health_check_source_ranges
-  target_tags        = var.webapp_firewall_target_tags
-  destination_ranges = [google_compute_subnetwork.webapp_subnet.ip_cidr_range]
-}
-
 # resource "google_compute_firewall" "allow_proxy" {
 #   name = var.firewall_allow_proxy_name
 #   allow {
