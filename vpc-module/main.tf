@@ -31,18 +31,19 @@ resource "google_compute_route" "webapp_subnet_route" {
 }
 
 # Commented this as now load balancer is handlening this
-# resource "google_compute_firewall" "vpc_firewall" {
-#   name    = var.webapp_firewall_name
-#   network = google_compute_network.vpc.id
-#   allow {
-#     protocol = var.webapp_firewall_protocol
-#     ports    = var.webapp_firewall_ports
-#   }
+# 22 - SSH in the VMs
+resource "google_compute_firewall" "vpc_firewall" {
+  name    = var.webapp_firewall_name
+  network = google_compute_network.vpc.id
+  allow {
+    protocol = var.webapp_firewall_protocol
+    ports    = var.webapp_firewall_ports
+  }
 
-#   direction     = var.webapp_firewall_direction
-#   target_tags   = var.webapp_firewall_target_tags
-#   source_ranges = var.webapp_firewall_source_ranges
-# }
+  direction     = var.webapp_firewall_direction
+  target_tags   = var.webapp_firewall_target_tags
+  source_ranges = var.webapp_firewall_source_ranges
+}
 
 resource "google_compute_firewall" "allow_db" {
   name    = var.firewall_db_allow_name
