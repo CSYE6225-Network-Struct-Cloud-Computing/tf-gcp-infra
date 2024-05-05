@@ -282,25 +282,25 @@ module "vm-template" {
   crypto_vm_key_id                                 = module.kms.crypto_vm_key_id
 }
 
-# import {
-#   id = "projects/${var.project_id}/locations/${var.region}/keyRings/${var.keyring_name}"
-#   to = module.kms.google_kms_key_ring.default
-# }
+import {
+  id = "projects/${var.project_id}/locations/${var.region}/keyRings/${var.keyring_name}"
+  to = module.kms.google_kms_key_ring.default
+}
 
-# import {
-#   id = "projects/${var.project_id}/locations/${var.region}/keyRings/${var.keyring_name}/cryptoKeys/${var.vm_crypto_key_name}"
-#   to = module.kms.google_kms_crypto_key.vm-key
-# }
+import {
+  id = "projects/${var.project_id}/locations/${var.region}/keyRings/${var.keyring_name}/cryptoKeys/${var.vm_crypto_key_name}"
+  to = module.kms.google_kms_crypto_key.vm-key
+}
 
-# import {
-#   id = "projects/${var.project_id}/locations/${var.region}/keyRings/${var.keyring_name}/cryptoKeys/${var.sql_crypto_key_name}"
-#   to = module.kms.google_kms_crypto_key.sql-key
-# }
+import {
+  id = "projects/${var.project_id}/locations/${var.region}/keyRings/${var.keyring_name}/cryptoKeys/${var.sql_crypto_key_name}"
+  to = module.kms.google_kms_crypto_key.sql-key
+}
 
-# import {
-#   id = "projects/${var.project_id}/locations/${var.region}/keyRings/${var.keyring_name}/cryptoKeys/${var.bucket_crypto_key_name}"
-#   to = module.kms.google_kms_crypto_key.bucket-key
-# }
+import {
+  id = "projects/${var.project_id}/locations/${var.region}/keyRings/${var.keyring_name}/cryptoKeys/${var.bucket_crypto_key_name}"
+  to = module.kms.google_kms_crypto_key.bucket-key
+}
 
 module "kms" {
   source                         = "./kms-module"
