@@ -50,13 +50,31 @@ resource "google_compute_region_instance_template" "default" {
       mv /tmp/.env /home/csye6225/app/.env
       chown -R csye6225:csye6225 /home/csye6225/app
 
-      sudo chcon -t systemd_unit_file_t /home/csye6225/app/.env
+      if [ -f /home/csye6225/app/.env ]; then
+        sudo chcon -t systemd_unit_file_t /home/csye6225/app/.env
+        echo "SELinux context set successfully"
+      else
+        echo "Failed to find /home/csye6225/app/.env file"
+        exit 1
+      fi
+
+      # sudo chcon -t systemd_unit_file_t /home/csye6225/app/.env
 
       sudo systemctl daemon-reload
 
-      systemctl restart google-cloud-ops-agent
+      # Restart google-cloud-ops-agent if needed
+      if systemctl is-enabled google-cloud-ops-agent; then
+        sudo systemctl restart google-cloud-ops-agent
+        echo "google-cloud-ops-agent restarted successfully"
+      else
+        echo "google-cloud-ops-agent is not enabled"
+      fi
+
+      # systemctl restart google-cloud-ops-agent
 
       systemctl start runApp
+
+      systemctl restart runApp
 
       EOT
 
