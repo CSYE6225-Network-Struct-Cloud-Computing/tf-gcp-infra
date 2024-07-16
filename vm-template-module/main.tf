@@ -35,6 +35,11 @@ resource "google_compute_region_instance_template" "default" {
   metadata_startup_script = <<-EOT
       #!/bin/bash
 
+      LOGFILE=/var/log/startup-script.log
+      exec > $LOGFILE 2>&1
+
+      echo "Starting startup script..."
+
       touch /tmp/.env
 
       echo "PORT=${var.PORT}" >> /tmp/.env
@@ -72,10 +77,12 @@ resource "google_compute_region_instance_template" "default" {
 
       # systemctl restart google-cloud-ops-agent
 
-      systemctl start runApp
+      sudo systemctl start runApp
 
-      systemctl restart runApp
-
+      sudo systemctl restart runApp
+      echo "runApp service started and restarted"
+      echo "Startup script completed."
+      
       EOT
 
   service_account {
