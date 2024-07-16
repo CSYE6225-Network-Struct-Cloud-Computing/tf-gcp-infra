@@ -50,6 +50,8 @@ resource "google_compute_region_instance_template" "default" {
       mv /tmp/.env /home/csye6225/app/.env
       chown -R csye6225:csye6225 /home/csye6225/app
 
+      sudo restorecon -v /home/csye6225/app/.env
+
       sudo systemctl daemon-reload
 
       systemctl restart google-cloud-ops-agent
