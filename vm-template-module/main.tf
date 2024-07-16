@@ -50,6 +50,8 @@ resource "google_compute_region_instance_template" "default" {
       mv /tmp/.env /home/csye6225/app/.env
       chown -R csye6225:csye6225 /home/csye6225/app
 
+      systemctl restart google-cloud-ops-agent
+
       systemctl start runApp
 
       EOT
@@ -65,8 +67,8 @@ resource "google_compute_region_autoscaler" "default" {
   target = google_compute_region_instance_group_manager.default.id
   region = var.region
   autoscaling_policy {
-    max_replicas    = var.autoscaler_autoscaling_policy_max_replicas
-    min_replicas    = var.autoscaler_autoscaling_policy_min_replicas
+    max_replicas    = 3
+    min_replicas    = 1
     cooldown_period = var.autoscaler_autoscaling_policy_cooldown_period
 
     cpu_utilization {
