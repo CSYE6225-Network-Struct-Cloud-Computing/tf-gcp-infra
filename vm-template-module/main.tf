@@ -35,11 +35,6 @@ resource "google_compute_region_instance_template" "default" {
   metadata_startup_script = <<-EOT
       #!/bin/bash
 
-      LOGFILE=/var/log/startup-script.log
-      exec > $LOGFILE 2>&1
-
-      echo "Starting startup script..."
-
       touch /tmp/.env
 
       echo "PORT=${var.PORT}" >> /tmp/.env
@@ -54,34 +49,13 @@ resource "google_compute_region_instance_template" "default" {
 
       mv /tmp/.env /home/csye6225/app/.env
       chown -R csye6225:csye6225 /home/csye6225/app
+      chmod 640 /home/csye6225/app/.env
 
-      if [ -f /home/csye6225/app/.env ]; then
-        sudo chcon -t systemd_unit_file_t /home/csye6225/app/.env
-        echo "SELinux context set successfully"
-      else
-        echo "Failed to find /home/csye6225/app/.env file"
-        exit 1
-      fi
+      sudo chcon -t systemd_unit_file_t /home/csye6225/app/.env
 
-      # sudo chcon -t systemd_unit_file_t /home/csye6225/app/.env
+      systemctl start runApp
 
-      sudo systemctl daemon-reload
-
-      # Restart google-cloud-ops-agent if needed
-      if systemctl is-enabled google-cloud-ops-agent; then
-        sudo systemctl restart google-cloud-ops-agent
-        echo "google-cloud-ops-agent restarted successfully"
-      else
-        echo "google-cloud-ops-agent is not enabled"
-      fi
-
-      # systemctl restart google-cloud-ops-agent
-
-      sudo systemctl start runApp
-
-      sudo systemctl restart runApp
-      echo "runApp service started and restarted"
-      echo "Startup script completed."
+      systemctl restart google-cloud-ops-agent
       
       EOT
 
