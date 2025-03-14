@@ -276,5 +276,5 @@ module "vm-template" {
   DOMAIN_NAME                                      = var.DOMAIN_NAME
   ssl-certificate-name                             = var.ssl-certificate-name
 
-  depends_on = [ module.cloudSQL ]
+  depends_on = [module.cloudSQL]
 }
