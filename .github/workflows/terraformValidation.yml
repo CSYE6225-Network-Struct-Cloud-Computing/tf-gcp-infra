@@ -1,23 +1,34 @@
-name: Check Terraform Validate and format
+name: Check Terraform Validate and Format
 
 on: [pull_request, push]
 
 jobs:
     fmt-check:
         runs-on: ubuntu-latest
-        name: Check terraform files format
+        name: Check Terraform Files Format
         steps:
             - name: Checkout
               uses: actions/checkout@v3
 
+            - name: Install Terraform
+              uses: hashicorp/setup-terraform@v2
+              with:
+                terraform_version: latest
+
             - name: Terraform fmt command
               run: terraform fmt -recursive -check
+
     validate:
         runs-on: ubuntu-latest
-        name: Check Terrafrom Validation
+        name: Check Terraform Validation
         steps:
             - name: Checkout
               uses: actions/checkout@v3
+
+            - name: Install Terraform
+              uses: hashicorp/setup-terraform@v2
+              with:
+                terraform_version: latest
 
             - name: Terraform init
               run: terraform init
