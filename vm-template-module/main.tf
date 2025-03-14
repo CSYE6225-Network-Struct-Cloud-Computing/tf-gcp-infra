@@ -13,12 +13,6 @@ resource "google_compute_region_instance_template" "default" {
     boot         = var.instance_template_disk_boot
     disk_type    = var.boot_disk_type
     disk_size_gb = var.boot_disk_size
-    source_image_encryption_key {
-      kms_key_self_link = var.crypto_vm_key_id
-    }
-    disk_encryption_key {
-      kms_key_self_link = var.crypto_vm_key_id
-    }
   }
 
   network_interface {
@@ -70,8 +64,8 @@ resource "google_compute_region_autoscaler" "default" {
   target = google_compute_region_instance_group_manager.default.id
   region = var.region
   autoscaling_policy {
-    max_replicas    = 3
-    min_replicas    = 1
+    max_replicas    = var.autoscaler_autoscaling_policy_max_replicas
+    min_replicas    = var.autoscaler_autoscaling_policy_min_replicas
     cooldown_period = var.autoscaler_autoscaling_policy_cooldown_period
 
     cpu_utilization {
