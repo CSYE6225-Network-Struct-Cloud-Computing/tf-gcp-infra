@@ -126,9 +126,7 @@ module "cloudSQL" {
   compute_forwarding_rule_load_balancing_schema = var.compute_forwarding_rule_load_balancing_schema
   google_sql_database_name                      = var.google_sql_database_name
   google_sql_user_name                          = var.google_sql_user_name
-  crypto_sql_key_id                             = module.kms.crypto_sql_key_id
   project_id                                    = var.project_id
-  depends_on                                    = [module.kms]
 }
 
 module "dns" {
@@ -149,7 +147,6 @@ module "serviceAccount" {
   project_iam_binding_logging_admin            = var.project_iam_binding_logging_admin
   project_iam_binding_monitoring_metric_writer = var.project_iam_binding_monitoring_metric_writer
   project_iam_binding_pubsub_publisher         = var.project_iam_binding_pubsub_publisher
-  vm_crypto_key                                = module.kms.crypto_vm_key_id
   account_no                                   = var.account_no
   kms_role                                     = var.kms_role
 }
@@ -208,7 +205,6 @@ module "cloud_functions" {
   cloud_fun_trigger_region                        = var.cloud_fun_trigger_region
   cloud_fun_max_instance_count                    = var.cloud_fun_max_instance_count
   cloud_fun_min_instance_count                    = var.cloud_fun_min_instance_count
-  bucket_crypto_key_id                            = module.kms.crypto_bucket_key_id
 }
 
 module "vm-template" {
@@ -279,39 +275,6 @@ module "vm-template" {
   lb_forwarding_rule_network_tier                  = var.lb_forwarding_rule_network_tier
   DOMAIN_NAME                                      = var.DOMAIN_NAME
   ssl-certificate-name                             = var.ssl-certificate-name
-  crypto_vm_key_id                                 = module.kms.crypto_vm_key_id
-}
 
-import {
-  id = "projects/${var.project_id}/locations/${var.region}/keyRings/${var.keyring_name}"
-  to = module.kms.google_kms_key_ring.default
-}
-
-import {
-  id = "projects/${var.project_id}/locations/${var.region}/keyRings/${var.keyring_name}/cryptoKeys/${var.vm_crypto_key_name}"
-  to = module.kms.google_kms_crypto_key.vm-key
-}
-
-import {
-  id = "projects/${var.project_id}/locations/${var.region}/keyRings/${var.keyring_name}/cryptoKeys/${var.sql_crypto_key_name}"
-  to = module.kms.google_kms_crypto_key.sql-key
-}
-
-import {
-  id = "projects/${var.project_id}/locations/${var.region}/keyRings/${var.keyring_name}/cryptoKeys/${var.bucket_crypto_key_name}"
-  to = module.kms.google_kms_crypto_key.bucket-key
-}
-
-module "kms" {
-  source                         = "./kms-module"
-  vm_crypto_key_name             = var.vm_crypto_key_name
-  keyring_name                   = var.keyring_name
-  bucket_crypto_key_name         = var.bucket_crypto_key_name
-  sql_crypto_key_name            = var.sql_crypto_key_name
-  region                         = var.region
-  project_id                     = var.project_id
-  kms_crypto_key_rotation_period = var.kms_crypto_key_rotation_period
-  account_no                     = var.account_no
-  kms_role                       = var.kms_role
-  sa_cloud_sql_crypto_key        = var.sa_cloud_sql_crypto_key
+  depends_on = [ module.cloudSQL ]
 }

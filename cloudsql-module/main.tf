@@ -26,8 +26,6 @@ resource "google_sql_database_instance" "default" {
     }
   }
   deletion_protection = var.sql_deletion_protection
-
-  encryption_key_name = var.crypto_sql_key_id
 }
 
 resource "google_compute_address" "default" {
